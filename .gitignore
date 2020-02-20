@@ -1,6 +1,20 @@
 
-# Created by https://www.gitignore.io/api/osx,latex,python
-# Edit at https://www.gitignore.io/?templates=osx,latex,python
+# Created by https://www.gitignore.io/api/osx,latex,python,jupyternotebooks
+# Edit at https://www.gitignore.io/?templates=osx,latex,python,jupyternotebooks
+
+### JupyterNotebooks ###
+# gitignore template for Jupyter Notebooks
+# website: http://jupyter.org/
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Remove previous ipynb_checkpoints
+#   git rm -r .ipynb_checkpoints/
 
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:
@@ -405,4 +419,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# End of https://www.gitignore.io/api/osx,latex,python
+# End of https://www.gitignore.io/api/osx,latex,python,jupyternotebooks
