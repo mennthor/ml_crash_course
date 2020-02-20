@@ -1,0 +1,379 @@
+\include{header}
+
+% Main title, author etc. in header
+\subtitle{Part I -- Math and Minimisers}
+
+\begin{document}
+  \maketitle
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MATH
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section{Math}
+
+% vectors and matrices %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Vectors and Matrices}
+
+% <Vectors>
+  \begin{frame}{Vectors}
+    \begin{itemize}
+      \item Vectors have both magnitude ($|\vec{v}| \geq 0$) and direction
+        \rightarrow \enquote{arrow}
+      \item Vectors are represented by components indicating their length
+        along the basis directions
+      \item Usually we write column vectors.
+        \enquote{rotate} vector up to get the transposed version
+        \begin{equation*}
+          \left(v_1, v_2, \dots, v_n\right)^\mathrm{T} \coloneqq
+          \begin{pmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{pmatrix}
+        \end{equation*}
+      \item Vectors can be added by putting the end of one vector at the tip
+        of another one. Equivalent to summing each individual components
+        \begin{equation*}
+          \vec{v} + \vec{w} =
+            \left(v_1 + w_1, v_2 + w_2, \dots, v_n + w_n\right)^\mathrm{T}
+        \end{equation*}
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{Vectors}
+    \begin{itemize}
+      \item Scalar multiplication:
+        Multiply every component with the scalar $\alpha$
+        \begin{equation*}
+          \alpha \vec{v} =
+            \alpha \left(v_1, v_2, \dots, v_n\right)^\mathrm{T} =
+            \left(\alpha v_1, \alpha v_2, \dots, \alpha v_n\right)^\mathrm{T}
+        \end{equation*}
+      \item Norm (length) of a vector
+        \begin{equation*}
+          |\vec{v}| = \sqrt{\vec{v}\cdot \vec{v}} =
+            \sqrt{v_1^2 + v_2^2 + \dots + v_n^2}
+        \end{equation*}
+      \item Scalar product (also \enquote{inner product}):
+        Multiply each element and sum up, produces a single number $\beta$
+        \begin{equation*}
+          \vec{v}\cdot \vec{w} =
+            v_1 w_1 + v_2 w_2 + \dots + v_n w_n =
+            \sum_{i=1}^{N} v_i w_i = \beta
+        \end{equation*}
+        Alternatively the following form is used to get the angle $\phi$
+          between two vectors
+        \begin{equation*}
+          \vec{v}\cdot \vec{w} \coloneqq |\vec{v}||\vec{w}|\cos(\phi)
+        \end{equation*}
+
+    \end{itemize}
+  \end{frame}
+% </Vectors>
+
+% <Vector Exercise>
+  \begin{frame}{Vectors}
+    \begin{exampleblock}{Exercise}
+      We have two 4D vectors
+      \begin{equation*}
+        \vec{v} = \left(1, -2, 5, 0\right)
+        \quad\mathrm{and}\quad
+        \vec{w} = \left(2, 2, 3, -1\right)
+      \end{equation*}
+      \begin{enumerate}
+        \item Calculate the lengths $|\vec{v}|$, $|\vec{w}|$
+        \item Calculate the sum $\vec{v} + \vec{w}$
+        \item Calculate the scalar product $\vec{v}\cdot \vec{w}$
+        \item What is angle $\phi$ in degrees between both vectors?
+        \item Find a vector $\vec{u}\neq \vec{0}$ which is orthogonal to $\vec{v}$
+      \end{enumerate}
+      The \texttt{numpy} package in Python has built-in support for vector
+      calculations.
+      Use \texttt{numpy.dot}, \texttt{numpy.linalg.norm},
+      \texttt{numpy.rad2deg}, etc. to check your calculations above or code the
+      functionality yourself.
+      See \url{https://numpy.org/devdocs/reference/index.html} for help.
+    \end{exampleblock}
+  \end{frame}
+% </Vector Exercise>
+
+% <Matrices>
+  % Intro, vector identification
+  \begin{frame}{Matrices}
+    \begin{itemize}
+      \item Matrices are 2D collections of numbers
+      \item A $(n, m)$ matrix $\underline{M}$ is defined as a tuple of numbers
+        $a_{ij}$ ($i=1,\dots,m$, $j=1,\dots,n$)
+        \begin{equation*}
+          \underline{M} =
+          \begin{pmatrix}
+            a_{11} & a_{12} & \dots & a_{1n} \\
+            a_{21} & a_{22} & \dots & a_{2n} \\
+            \vdots & \vdots & & \vdots \\
+            a_{m1} & a_{m2} & \dots & a_{mn} \\
+          \end{pmatrix}
+        \end{equation*}
+      \item We can identify column vectors with $(m, 1)$ matrices and row
+        vectors with $(1, n)$ matrices
+        \begin{gather*}
+          \underline{M}_{1,n} = \left(v_1, \dots, v_n\right)
+            \leftrightarrow \vec{v}^\mathrm{T} \\
+          \underline{M}_{m, 1} =
+            \begin{pmatrix}w_1 \\ \vdots \\ w_m \end{pmatrix}
+            \leftrightarrow \vec{w}
+        \end{gather*}
+    \end{itemize}
+  \end{frame}
+
+  % Scalar multiplication, matrix product
+  \begin{frame}{Matrices}
+    \begin{itemize}
+      \item Multiplication with a scalar $\alpha$ is done by multiplication of
+        every element with that scalar
+        \begin{equation*}
+          \alpha \underline{M} =
+          \begin{pmatrix}
+            \alpha a_{11} & \alpha a_{12} & \dots & \alpha a_{1n} \\
+            \alpha a_{21} & \alpha a_{22} & \dots & \alpha a_{2n} \\
+            \vdots & \vdots & & \vdots \\
+            \alpha a_{m1} & \alpha a_{m2} & \dots & \alpha a_{mn} \\
+          \end{pmatrix}
+        \end{equation*}
+      \item Matrix products $\underline{C} = \underline{A}\,\underline{B}$ are
+        defined component-wise by
+        \begin{equation*}
+          c_{ij} = \sum_{k=1}^{n} a_{ik}b_{kj}
+        \end{equation*}
+        where $\underline{A}$ is a $(m, n)$, $\underline{B}$ a $(n, p)$ and
+        $\underline{C}$ a $(m, p)$ matrix
+        \begin{itemize}
+          \item This is usually called
+            \enquote{multiply row $i$ of $\underline{A}$ by
+                     column $j$ of $\underline{B}$}
+          % \item The inner index range must match, we can multiply any 2 matrices
+          %   where the number of rows of the first on equals the number of columns
+          %   in the second one
+        \end{itemize}
+      \begin{exampleblock}{Example: Matrix times vector}
+        \begin{equation*}
+          \begin{pmatrix}
+            a_{11} & a_{12} \\ a_{21} & a_{22} \\ a_{31} & a_{32}
+          \end{pmatrix}_{(3,2)}
+            \begin{pmatrix}v_1 \\ v_2\end{pmatrix}_{(2,1)} =
+          \begin{pmatrix}
+            a_{11}v_1 + a_{12}v_2 \\
+            a_{21}v_1 + a_{22}v_2 \\
+            a_{31}v_1 + a_{32}v_2
+          \end{pmatrix}_{(3,1)}
+        \end{equation*}
+      \end{exampleblock}
+    \end{itemize}
+  \end{frame}
+
+  % Transpose, inverse
+  \begin{frame}{Matrices}
+    \begin{itemize}
+      \item The transpose of a matrix is obtained by switching
+        elements $a_{ij}\leftrightarrow a_{ji}$
+        \begin{equation*}
+          \underline{M}^\mathrm{T} =
+          \begin{pmatrix}
+            a_{11} & a_{12} & \dots & a_{1n} \\
+            a_{21} & a_{22} & \dots & a_{2n} \\
+            \vdots & \vdots &  & \vdots \\
+            a_{m1} & a_{m2} & \dots & a_{mn} \\
+          \end{pmatrix}^\mathrm{T} =
+          \begin{pmatrix}
+            a_{11} & a_{21} & \dots & a_{m1} \\
+            a_{12} & a_{22} & \dots & a_{m2} \\
+            \vdots & \vdots &  & \vdots \\
+            a_{1n} & a_{2n} & \dots & a_{mn} \\
+          \end{pmatrix}
+        \end{equation*}
+      \item The inverse $\underline{M}^{-1}$ of a matrix is defined so that
+        \begin{equation*}
+          \underline{M}^{-1}\underline{M} =
+          \underline{M}\,\underline{M}^{-1} = \underline{1}
+        \end{equation*}
+        where $\underline{1}$ is the identity matrix
+        ($1$ on diagonal, $0$ everywhere else)
+        \begin{itemize}
+          \item The inverse can be found by solving a set of linear equations
+            using the definition above
+          \item Note: Not every matrix has an inverse!
+          \item For $(2,2)$ matrices the inverse can be explicitly calculated by
+            \begin{equation}
+              \begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} =
+              \frac{1}{ad-bc}
+                \begin{pmatrix} d & -c \\ -b & a \end{pmatrix}
+            \end{equation}
+        \end{itemize}
+    \end{itemize}
+  \end{frame}
+% </Matrices>
+
+% <Matrix Exercises>
+  \begin{frame}{Matrices}
+    \begin{exampleblock}{Exercise}
+      \begin{enumerate}
+        \item We have 2 matrices $\underline{A}, \underline{B}$
+          and a vector $\vec{v}$
+          \begin{equation*}
+            \underline{A} =
+              \begin{pmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{pmatrix}
+            \,\mathrm{, }\quad
+            \underline{B} =
+              \begin{pmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{pmatrix}
+            \,\mathrm{, }\quad
+            \vec{v} = \begin{pmatrix} 4 \\ 5 \\ 6 \end{pmatrix}
+          \end{equation*}
+          Calculate $\underline{A}\,\underline{B}$,
+          $\underline{B}\,\underline{A}$,
+          $\underline{A}\,\vec{v}$ and $\vec{v}^\mathrm{T}\,\underline{B}$.
+        \item Calculate the inverses (if existing) of
+          \begin{equation*}
+            \underline{A} =
+              \begin{pmatrix} 1 & 2 \\ 4 & 2 \end{pmatrix}
+            \quad\mathrm{, }\quad
+            \underline{B} =
+              \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}
+          \end{equation*}
+        \item We have a matrix $\underline{M} = \underline{1}$
+          and a vector $\vec{v}^\mathrm{T} = \left(v_1, v_2, v_3\right)$.
+          Calculate
+          \begin{equation*}
+            \vec{v}^\mathrm{T}\, \underline{M}\, \vec{v}
+          \end{equation*}
+      \end{enumerate}
+    Again, use \texttt{numpy} or own code to check your results.
+    \end{exampleblock}
+  \end{frame}
+% </Matrix Exercises>
+
+% <Convolution>
+  \begin{frame}{Convolution}
+    \begin{itemize}
+      \item Mathematically
+        \begin{equation*}
+          \left(f * g\right)(t) \coloneqq \int f(\tau)g(t-\tau)\deriv{\tau}
+        \end{equation*}
+      \begin{itemize}
+        \item Intuitive: $f$ is \enquote{signal}, $g$ is \enquote{response}.
+          At time $t$ the convolution gives the (causal, thus we mirror $g$)
+          system response for input $f$ and response $g$ by summing (integrating)
+          all infinitesimal mini-responses up to $t$
+      \end{itemize}
+      \item Here we need the discrete version, replacing integrals with sums
+      and functions with arrays of numbers ($f(x)\rightarrow f[i]$)
+      \begin{equation*}
+        (f*g)[i] = \sum_{k=-N}^{N} f[k]g[i-k]
+      \end{equation*}
+      where $\{-N, -N+1, \dots, N-1, N\}$ is the support of $g$
+      \begin{itemize}
+        \item Finite support leads to problems at the borders of $f$
+        \item Multiple strategies exist, eg. padding with zero,
+          mirroring at the border, cyclic repetition or
+          repeating the outermost element
+      \end{itemize}
+    \end{itemize}
+  \end{frame}
+% </Convolution>
+
+% <Convolution Exercises>
+  \begin{frame}{Convolution}
+    \begin{exampleblock}{Exercise}
+      \begin{enumerate}
+        \item TODO
+      \end{enumerate}
+    \end{exampleblock}
+  \end{frame}
+% </Convolution Exercises>
+
+% functions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Functions}
+
+% <Functions>
+  \begin{frame}{Functions}
+    Hello, world!
+  \end{frame}
+% </Functions>
+
+% <Function Composition>
+  \begin{frame}{Function Composition}
+    Hello, world!
+  \end{frame}
+% </Function Composition>
+
+% <Function Composition Exercises>
+  \begin{frame}{Function Composition Exercises}
+    Hello, world!
+  \end{frame}
+% </Function Composition Exercises>
+
+% <Derivatives>
+  \begin{frame}{Derivatives}
+    Hello, world!
+  \end{frame}
+% </Derivatives>
+
+% <Derivatives Exercises>
+  \begin{frame}{Derivatives Exercises}
+    Hello, world!
+  \end{frame}
+% </Derivatives Exercises>
+
+% <Chain Rule>
+  \begin{frame}{Chain Rule}
+    Hello, world!
+  \end{frame}
+% </Chain Rule>
+
+% <Chain Rule Exercises>
+  \begin{frame}{Chain Rule Exercises}
+    Hello, world!
+  \end{frame}
+% </Chain Rule Exercises>
+
+% <Taylor Expansion>
+  \begin{frame}{Taylor Expansion}
+    Hello, world!
+  \end{frame}
+% </Taylor Expansion>
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MINIMIZERS
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section{Minimisation}
+% <Analytical>
+  \begin{frame}{Analytical}
+    A
+  \end{frame}
+% </Analytical>
+
+% <Bisection>
+  \begin{frame}{Bisection}
+    A
+  \end{frame}
+% </Bisection>
+
+% <Newton Methods>
+  \begin{frame}{Newton Methods}
+    A
+  \end{frame}
+% </Newton Methods>
+
+% <Gradient Descent>
+  \begin{frame}{Gradient Descent}
+    A
+  \end{frame}
+% </Gradient Descent>
+
+% <Stochastic Gradient Descent>
+  \begin{frame}{Stochastic Gradient Descent}
+    A
+  \end{frame}
+% </Stochastic Gradient Descent>
+
+% <Momentum Gradient Descent>
+  \begin{frame}{Momentum Gradient Descent}
+    A
+  \end{frame}
+% </Momentum Gradient Descent>
+
+\end{document}
