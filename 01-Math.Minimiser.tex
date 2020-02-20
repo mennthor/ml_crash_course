@@ -72,13 +72,13 @@
     \begin{exampleblock}{Exercise}
       We have two 4D vectors
       \begin{equation*}
-        \vec{v} = \left(1, -2, 5, 0\right)
+        \vec{v} = \left(1, -2, 5, 0\right)^\mathrm{T}
         \quad\mathrm{and}\quad
-        \vec{w} = \left(2, 2, 3, -1\right)
+        \vec{w} = \left(2, 2, 3, -1\right)^\mathrm{T}
       \end{equation*}
       \begin{enumerate}
         \item Calculate the lengths $|\vec{v}|$, $|\vec{w}|$
-        \item Calculate the sum $\vec{v} + \vec{w}$
+        \item Calculate the sum $\vec{v} + \vec{w}$ and difference $\vec{v} - \vec{w}$
         \item Calculate the scalar product $\vec{v}\cdot \vec{w}$
         \item What is angle $\phi$ in degrees between both vectors?
         \item Find a vector $\vec{u}\neq \vec{0}$ which is orthogonal to $\vec{v}$
@@ -201,7 +201,7 @@
             \begin{equation}
               \begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} =
               \frac{1}{ad-bc}
-                \begin{pmatrix} d & -c \\ -b & a \end{pmatrix}
+                \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}
             \end{equation}
         \end{itemize}
     \end{itemize}
@@ -251,20 +251,25 @@
     \begin{itemize}
       \item Mathematically
         \begin{equation*}
-          \left(f * g\right)(t) \coloneqq \int f(\tau)g(t-\tau)\deriv{\tau}
+          \left(f * g\right)(t) \coloneqq
+            \int_{-\infty}^\infty f(\tau)g(t-\tau)\deriv{\tau}
         \end{equation*}
       \begin{itemize}
-        \item Intuitive: $f$ is \enquote{signal}, $g$ is \enquote{response}.
+        \item Intuitive: $f$ is a \enquote{signal}, $g$ is a \enquote{response}.
           At time $t$ the convolution gives the (causal, thus we mirror $g$)
           system response for input $f$ and response $g$ by summing (integrating)
           all infinitesimal mini-responses up to $t$
+          \item Imagine $f$ being decomposed in \enquote{delta} peaks and $g$
+            acts independently on each input impulse
       \end{itemize}
       \item Here we need the discrete version, replacing integrals with sums
       and functions with arrays of numbers ($f(x)\rightarrow f[i]$)
       \begin{equation*}
-        (f*g)[i] = \sum_{k=-N}^{N} f[k]g[i-k]
+        (f*g)[i] = \sum_{k=-\infty}^{\infty} f[k]g[i-k]
       \end{equation*}
-      where $\{-N, -N+1, \dots, N-1, N\}$ is the support of $g$
+      \item Note: In real application the kernel or the signal has some finite support
+      (there are no infinite length arrays), so the sum will be constrained by
+      some range $\{-N, -N+1, \dots, N-1, N\}$.
       \begin{itemize}
         \item Finite support leads to problems at the borders of $f$
         \item Multiple strategies exist, eg. padding with zero,
@@ -275,11 +280,30 @@
   \end{frame}
 % </Convolution>
 
+% <Convolution>
+  \begin{frame}{Convolution}
+    \begin{itemize}
+      \item In two dimensions convolutions works the same
+        \begin{equation*}
+          (f*g)[i, j] =
+          \sum_{k=-\infty}^{\infty} \sum_{l=-\infty}^{\infty} f[k,l]g[i-k, j-l]
+        \end{equation*}
+      \item Same here with the finite support
+      \item In image applications, the response is often called kernel or filter
+      \item Don't forget to flip the kernel horizontally and vertically before
+        computing the elementwise multiplication
+      \item This is what is used in convolutional neural network layers (although)
+        technically they don't flip the kernel, but the weights are learned anyway
+    \end{itemize}
+  \end{frame}
+% </Convolution>
+
 % <Convolution Exercises>
   \begin{frame}{Convolution}
     \begin{exampleblock}{Exercise}
       \begin{enumerate}
-        \item TODO
+        \item Simple 1D discrete convolution
+        \item 2D edge finding convolution
       \end{enumerate}
     \end{exampleblock}
   \end{frame}
