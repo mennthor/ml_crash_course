@@ -283,7 +283,7 @@
 % <Convolution>
   \begin{frame}{Convolution}
     \begin{itemize}
-      \item In two dimensions convolutions works the same
+      \item In two dimensions, convolutions work the same way
         \begin{equation*}
           (f*g)[i, j] =
           \sum_{k=-\infty}^{\infty} \sum_{l=-\infty}^{\infty} f[k,l]g[i-k, j-l]
@@ -292,8 +292,8 @@
       \item In image applications, the response is often called kernel or filter
       \item Don't forget to flip the kernel horizontally and vertically before
         computing the elementwise multiplication
-      \item This is what is used in convolutional neural network layers (although)
-        technically they don't flip the kernel, but the weights are learned anyway
+      \item This is what is used in convolutional neural network layers (although
+        technically they don't flip the kernel, but the weights are learned anyway)
     \end{itemize}
   \end{frame}
 % </Convolution>
@@ -301,9 +301,60 @@
 % <Convolution Exercises>
   \begin{frame}{Convolution}
     \begin{exampleblock}{Exercise}
+    For the following exercises, pad the signal function with zeroes where
+    appropriate. Additionally you can also try cyclic, mirrored or \enquote{repeated}
+    edges or only calculate the convolution where the signal is valid.
       \begin{enumerate}
-        \item Simple 1D discrete convolution
-        \item 2D edge finding convolution
+        \item Consider a discrete signal
+          \begin{equation*}
+            f[i] = 3\delta[i]
+          \end{equation*}
+          (value of $3$ at position $i=0$) and a response
+          \begin{equation*}
+            g[i] = \left\{g[i=0] = 2, g[i=1] = 1\right\}
+          \end{equation*}
+          Compute the convolution $f*g$ for all non-zero components.
+        \item Now we have a more complicated signal
+          \begin{equation*}
+            f[i] = \left\{f[i=0] = 3, f[i=1] = 4, f[i=2] = 5\right\}
+          \end{equation*}
+          Compute $f*g$ with the same kernel $g$ as above. \\
+          Tip: \emph{For grasping the concept of why the kernel is flipped, try
+          to imagine how each signal contribution triggers the response. The
+          response needs some time to arrive at the current index which in the
+          end gives you the flipped kernel in the formula.}
+      \end{enumerate}
+    \end{exampleblock}
+  \end{frame}
+% </Convolution Exercises>
+
+% <Convolution Exercises>
+  \begin{frame}{Convolution}
+    \begin{exampleblock}{Exercise}
+      \begin{enumerate}
+        \item[3] Now we try a 2D convolution.
+          Convolve the following $6x6$ \enquote{grayscale images}
+          \begin{equation*}
+            \mathrm{Img}_1 = \begin{pmatrix}
+              0 & 0 & 1 & 3 & 0 & 0 \\
+              0 & 0 & 1 & 3 & 0 & 0 \\
+              0 & 0 & 1 & 3 & 0 & 0 \\
+              0 & 0 & 1 & 3 & 0 & 0 \\
+              0 & 0 & 1 & 3 & 0 & 0 \\
+              0 & 0 & 1 & 3 & 0 & 0
+            \end{pmatrix}
+            \quad\mathrm{and}\quad
+            \mathrm{Img}_2 = \mathrm{Img}_1^\mathrm{T}
+          \end{equation*}
+          with a $3x3$ \enquote{vertical edge finding} kernel
+          \begin{equation*}
+            \begin{pmatrix}
+              0 & 1 & 0 \\
+              0 & 1 & 0 \\
+              0 & 1 & 0
+            \end{pmatrix}
+          \end{equation*}
+        Interpret the results.
       \end{enumerate}
     \end{exampleblock}
   \end{frame}
