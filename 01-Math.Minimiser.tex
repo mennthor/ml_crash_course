@@ -302,8 +302,8 @@
   \begin{frame}{Convolution}
     \begin{exampleblock}{Exercise}
     For the following exercises, pad the signal function with zeroes where
-    appropriate. Additionally you can also try cyclic, mirrored or \enquote{repeated}
-    edges or only calculate the convolution where the signal is valid.
+    appropriate.
+    % Additionally you can also try cyclic, mirrored or \enquote{repeated} edges or only calculate the convolution where the signal is valid.
       \begin{enumerate}
         \item Consider a discrete signal
           \begin{equation*}
@@ -319,10 +319,10 @@
             f[i] = \left\{f[i=0] = 3, f[i=1] = 4, f[i=2] = 5\right\}
           \end{equation*}
           Compute $f*g$ with the same kernel $g$ as above. \\
-          Tip: \emph{For grasping the concept of why the kernel is flipped, try
+          {\footnotesize Tip: \emph{For grasping the concept of why the kernel is flipped, try
           to imagine how each signal contribution triggers the response. The
           response needs some time to arrive at the current index which in the
-          end gives you the flipped kernel in the formula.}
+          end gives you the flipped kernel in the formula.}}
       \end{enumerate}
     \end{exampleblock}
   \end{frame}
