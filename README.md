@@ -1,4 +1,4 @@
-# ML crash COurse
+# ML crash Course
 
 Crash course for selected machine learning topics including a brief introduction of the necessary math and statistics.
 
