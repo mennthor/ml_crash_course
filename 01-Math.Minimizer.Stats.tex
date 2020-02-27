@@ -1,7 +1,7 @@
 \include{header}
 
 % Main title, author etc. in header
-\subtitle{Part I -- Math and Minimisers}
+\subtitle{Part I -- Math and Minimizers}
 
 \begin{document}
   \maketitle
@@ -365,56 +365,93 @@
 
 % <Functions>
   \begin{frame}{Functions}
-    Hello, world!
+    \begin{itemize}
+      \item Functions define a mapping from one set to another
+      \item Typically we deal with functions $f:\mathbb{R}^n \rightarrow \mathbb{R}$ mapping from many to a single real number or $f:\mathbb{R}^n \rightarrow \mathbb{R}^m$ mapping from many to many real numbers (vector functions)
+      \item Loss functions can have from a few to millions of input parameters and usually map to a single number
+      \item In neural networks, the connections are built using vector functions
+      \item Functions can be composed by applying each mapping in order, eg. for two functions $f, g$
+      \begin{equation*}
+        (g\circ f)(x) = g(f(x))
+      \end{equation*}
+      which means applying first $f$ on $x$ and then $g$ on the result of $f(x)$
+    \end{itemize}
   \end{frame}
 % </Functions>
 
-% <Function Composition>
-  \begin{frame}{Function Composition}
-    Hello, world!
-  \end{frame}
-% </Function Composition>
-
-% <Function Composition Exercises>
-  \begin{frame}{Function Composition Exercises}
-    Hello, world!
-  \end{frame}
-% </Function Composition Exercises>
-
 % <Derivatives>
   \begin{frame}{Derivatives}
-    Hello, world!
+    \begin{itemize}
+      \item We often need to know how fast or slow a function changes at a specific point, this is computed using the derivative
+      \begin{equation*}
+        \dderiv{f}{x} = \lim\limits_{h\rightarrow 0} \frac{f(x+h) - f(x)}{h}
+      \end{equation*}
+      \item For functions of many parameters, the partial derivative is the derivative of the function considering only a single parameter
+      \begin{equation*}
+        \ddel{f}{x_i} = \lim\limits_{h\rightarrow 0}
+          \frac{f(x_0, \dots, x_i+h, \dots) - f(\vec{x})}{h}
+      \end{equation*}
+    \item For vector functions the principle is the same, but with respect to each component of the vector
+    \end{itemize}
   \end{frame}
 % </Derivatives>
 
-% <Derivatives Exercises>
-  \begin{frame}{Derivatives Exercises}
-    Hello, world!
+% <Derivatives>
+  \begin{frame}{Derivatives}
+    \begin{itemize}
+      \item There are rules to derive many \enquote{standard} function elements like
+      \begin{equation*}
+        \dderiv{x^a}{x} = ax^{a-1} ,\quad \dderiv{e^x}{x} = e^x ,\quad \dderiv{\ln x}{x} = \frac{1}{x} ,\quad \dderiv{\sin x}{x} = \cos{x} ,\quad \dderiv{\cos x}{x} = -\sin x
+      \end{equation*}
+      \item Additionally there are rules that can be used when multiple functions are combined in a special arrangement ($f' \leftrightarrow \dderiv{f}{x}$)
+      \begin{align*}
+        (f + g)' &= f' + g' &&\quad\mathrm{sum\,rule} \\
+        (f \cdot g)' &= f' \cdot g + f \cdot g' &&\quad\mathrm{product\,rule} \\
+        (g \circ f)' &= g'(f) \cdot f' &&\quad\mathrm{chain\,rule}
+      \end{align*}
+      \item The chain rule is excessively used in the back-propagation algorithm to compute the gradient of a neural network
+      \item The same differentiation rules hold for many parameter and vector functions \textbf{but the order matters, because we are dealing with vectors and matrices instead of single numbers}
+    \end{itemize}
   \end{frame}
-% </Derivatives Exercises>
+% </Derivatives>
 
-% <Chain Rule>
-  \begin{frame}{Chain Rule}
-    Hello, world!
+% <Vector Functions>
+  \begin{frame}{$\mathbf{R}^n$ and Vector Functions}
+    \begin{itemize}
+      \item For functions with more than one input parameter we already saw the partial derivative
+      \item The gradient collects all possible derivatives in a new vector pointing along the direction of steepest ascent for functions $f:\mathbf{R}^n\rightarrow \mathbf{R}$
+      \begin{equation*}
+        \vec{\nabla}_{\vec{x}} f = \left[
+          \ddel{f}{x_1}, \ddel{f}{x_2}, \dots, \ddel{f}{x_n} \right]_{(1, n)}
+      \end{equation*}
+      \item Equivalently the Jacobi matrix collects all gradients for a vector function $f:\mathbf{R}^n\rightarrow\mathbf{R}^m$ in a $(m, n)$ matrix
+      \begin{equation*}
+        \underline{J} = \vec{\nabla}_{\vec{x}} \vec{f} = \left[
+          \ddel{\vec{f}}{x_1}, \ddel{\vec{f}}{x_2}, \dots, \ddel{\vec{f}}{x_n} \right] =
+          \begin{pmatrix}
+            \ddel{f_1}{x_1} & \dots & \ddel{f_1}{x_n} \\
+            \vdots & & \vdots \\
+            \ddel{f_m}{x_1} & \dots & \ddel{f_m}{x_n}
+          \end{pmatrix}_{(m, n)}
+      \end{equation*}
+    \end{itemize}
   \end{frame}
-% </Chain Rule>
+% </Vector Functions>
 
-% <Chain Rule Exercises>
-  \begin{frame}{Chain Rule Exercises}
-    Hello, world!
+% <Exercises>
+  \begin{frame}{Exercises}
+    \begin{exampleblock}{Exercise}
+      \begin{enumerate}
+        \item 1
+      \end{enumerate}
+    \end{exampleblock}
   \end{frame}
-% </Chain Rule Exercises>
-
-% <Taylor Expansion>
-  \begin{frame}{Taylor Expansion}
-    Hello, world!
-  \end{frame}
-% </Taylor Expansion>
+% </Exercises>
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MINIMIZERS
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \section{Minimisation}
+  \section{Minimization}
 % <Analytical>
   \begin{frame}{Analytical}
     A
@@ -450,5 +487,47 @@
     A
   \end{frame}
 % </Momentum Gradient Descent>
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% STATISTICS
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section{Statistics}
+% <Probabilities>
+  \begin{frame}{Probabilities}
+    \begin{itemize}
+      \item Discrete and continuous
+      \item Distributions
+      \item Sum rule, integral over distributions
+      \item Expectation values
+    \end{itemize}
+  \end{frame}
+% </Probabilities>
+
+% <Bayes Rule>
+  \begin{frame}{Bayes Rule}
+    \begin{itemize}
+      \item Bayes rule
+    \end{itemize}
+  \end{frame}
+% </Bayes Rule>
+
+% <Mean and Covariance>
+  \begin{frame}{Mean and Covariance}
+    \begin{itemize}
+      \item Mean and Covariance
+      \item Sample and population differences
+    \end{itemize}
+  \end{frame}
+% </Mean and Covariance>
+
+% <Important Distributions>
+  \begin{frame}{Important Distributions}
+    \begin{itemize}
+      \item Gaussian nD, special case 1D
+      \item Binomial
+      \item Poisson
+    \end{itemize}
+  \end{frame}
+% </Important Distributions>
 
 \end{document}
