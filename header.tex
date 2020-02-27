@@ -2,6 +2,7 @@
   \usetheme[block=fill]{metropolis}  % https://github.com/matze/mtheme
 
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage{xcolor}
 \usepackage{csquotes}
@@ -13,9 +14,9 @@
 \institute{EFS GmbH}
 
 \newcommand{\deriv}[1]{\mathrm{d}#1}
-\newcommand{\dderic}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#1}}
+\newcommand{\dderiv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
 \newcommand{\del}[1]{\partial #1}
-\newcommand{\ddel}[2]{\frac{\partial #1}{\partial #1}}
+\newcommand{\ddel}[2]{\frac{\partial #1}{\partial #2}}
 
 \newcommand{\tcw}[1]{\textcolor{white}{#1}}
 \newcommand{\tcb}[1]{\textcolor{black}{#1}}
@@ -24,3 +25,10 @@
 \newcommand{\ccgb}{\cellcolor{black!40}}
 \newcommand{\ccgc}{\cellcolor{black!30}}
 \newcommand{\ccb}{\cellcolor{black}}
+
+% Buffer slides for subsections (tex.stackexchange.com/questions/117658)
+\AtBeginSubsection[]{
+  \begin{frame}
+    \subsectionpage
+  \end{frame}
+}
