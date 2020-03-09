@@ -1,15 +1,17 @@
 TEXC = lualatex
 TEXCOPTS = --output-directory=build --halt-on-error
+TEXDEPS = header.tex
+
+TARGET01 = 01-Math.Minimizer.Stats
+
+all: $(TARGET01)
 
 
-all: part01
+$(TARGET01): build/$(TARGET01).pdf
 
 
-part01: build/01-Math.Minimiser.pdf
-
-
-build/01-Math.Minimiser.pdf: 01-Math.Minimiser.tex header.tex | build
-	$(TEXC) $(TEXCOPTS) 01-Math.Minimiser.tex
+build/$(TARGET01).pdf: $(TARGET01).tex $(TEXDEPS) | build
+	$(TEXC) $(TEXCOPTS) $(TARGET01).tex
 
 
 build:
