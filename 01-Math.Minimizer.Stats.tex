@@ -455,42 +455,143 @@
 % <Probabilities>
   \begin{frame}{Probabilities}
     \begin{itemize}
-      \item Discrete and continuous
-      \item Distributions
-      \item Sum rule, integral over distributions
-      \item Expectation values
+      \item Continuous distribution of a random variable $X$
+        \begin{equation*}
+          f(x) \quad\mathrm{with}\quad \int_\Omega f(x) \deriv{x} = 1
+        \end{equation*}
+        and $f(x) \geq 0$
+      \item Discrete distribution of a random variable $X$
+        \begin{equation*}
+          P(x_i) \quad\mathrm{with}\quad \sum_{x_i\in\chi} P(x_i) = 1
+        \end{equation*}
+        and $P(x_i) \geq 0$
+      \item Cumulative distribution functions define the probability contained up to a specific interval:
+      \begin{equation*}
+        F(x) = \int_{\chi_0}^x f(x) \deriv{x}
+        \quad \mathrm{and} \quad
+        F(n) = \sum_{i=i_\mathrm{min}}^n P(x_i)
+      \end{equation*}
+      for the continuous and the discrete (only when there is an explicit order) case respectively
     \end{itemize}
   \end{frame}
 % </Probabilities>
 
+% <Mean and Variance>
+  \begin{frame}{Mean and Variance}
+    \begin{itemize}
+      \item The mean $<x>$ of a distribution $f(x)$ is defined as
+        \begin{equation*}
+          \langle x\rangle = \int_\chi xf(x) \deriv{x}
+          \quad\mathrm{or}\quad
+          \langle x\rangle = \sum_{x_i\in\chi} x_iP(x_i)
+        \end{equation*}
+      \item In general, the expectation value $E[h]$ of a function $h(x)$ considering the distribution $f(x)$ ($P(x_i)$) of $x$ is defined as
+        \begin{equation*}
+          E[h] = \int_\chi h(x)f(x) \deriv{x}
+          \quad\mathrm{or}\quad
+          E[h] = \sum_{x_i\in\chi} h(x_i)P(x_i)
+        \end{equation*}
+      \item Another important summary statistic is the variance
+        \begin{equation*}
+          \Var[x] = \int_\chi (x-\langle x\rangle)^2 f(x) \deriv{x}
+          \quad\mathrm{or}\quad
+          \Var[x] = \sum_{x_i\in\chi} (x_i - \langle x\rangle)^2 P(x_i)
+        \end{equation*}
+        often used to characterize the width of a distribution
+        \begin{itemize}
+          \item The standard deviation $\sigma_x = \sqrt{\Var[x]}$ is also often used, because it has the same dimension as the random variable itself
+        \end{itemize}
+    \end{itemize}
+  \end{frame}
+% </Mean and Variance>
+
+% <Covariance and Correlation>
+  \begin{frame}{Covariance and Correlation}
+    \begin{itemize}
+      \item In cases with more than two variables the covariance between to random variables $(x, y)$ is defined equivalently as
+        \begin{align*}
+          \Cov[x, y] &= \int_\chi (x-\langle x\rangle)(y-\langle y\rangle) f(x,y) \deriv{x, y}
+          \quad\mathrm{or}\quad \\
+          \Cov[x, y] &= \sum_{x_i,y_i\in\chi}(x_i - \langle x\rangle)(y_i - \langle y\rangle) P(x_i, y_i)
+        \end{align*}
+        with the joint distributions $f$ ($P$) of $x, y$
+      \item To express the linear dependence of two random variables $x, y$ the correlation is used
+      \begin{equation*}
+        \rho_{x,y} = \frac{\Cov[x, y]}{\Var[x]\Var[y]}
+      \end{equation*}
+      which is the normalized covariance in the interval $[-1, +1]$
+      \begin{itemize}
+        \item When $\Cov[x,y] = 0$, $x,y$ are statistically independent leading to $f(x,y) = f(x)f(y)$. The reverse is not automatically given though
+      \end{itemize}
+    \end{itemize}
+  \end{frame}
+% </Covariance and Correlation>
+
 % <Bayes Rule>
   \begin{frame}{Bayes Rule}
     \begin{itemize}
-      \item Bayes rule
+      \item We can marginalize a multidimensional distribution by integrating (or summing) over all but one variable
+        \begin{equation*}
+          f(x) = \int_\mathcal{Y}f(x,y)\deriv{y}
+          \quad\mathrm{or}\quad
+          P(x) = \sum_{y_i\in\mathcal{Y}} P(x_i, y_i)
+        \end{equation*}
+        \item The following intuitive properties can be visualized and understood using Venn diagrams
+          \begin{align*}
+            P(A\,\mathrm{or}\,B) &= P(A) + P(B) - P(A\,\mathrm{and}\,B) \\
+            P(A\,\mathrm{and}\,B) &= P(A) P(B|A) = P(B) P(A|B)
+          \end{align*}
+        \item From these the Bayes rule follows
+          \begin{equation*}
+            P(A|B) = \frac{P(B|A) P(A)}{P(B)}
+          \end{equation*}
+          or in the more general case with multiple disjunct events $A_i$ using marginalization of $P(B)$
+          \begin{equation*}
+            P(A_i|B) = \frac{P(B|A_i) P(A_i)}{\sum_{i=1}^N P(B|A_i)P(A_i)}
+          \end{equation*}
     \end{itemize}
   \end{frame}
 % </Bayes Rule>
 
-% <Mean and Covariance>
-  \begin{frame}{Mean and Covariance}
-    \begin{itemize}
-      \item Mean and Covariance
-      \item Sample and population differences
-    \end{itemize}
-  \end{frame}
-% </Mean and Covariance>
-
 % <Important Distributions>
   \begin{frame}{Important Distributions}
     \begin{itemize}
-      \item Gaussian nD, special case 1D
-      \item Binomial
-      \item Poisson
+      \item Gaussian distribution in $d$ dimensions
+        \begin{equation*}
+          \mathcal{N}(\vec{x}|\vec{\mu},\underline{\Sigma})
+          = \frac{\det{\underline{\Sigma}^{-1}}}{(2\pi)^{d/2}}
+            \exp\left(
+              -\frac{1}{2} (\vec{x}-\vec{\mu})^\mathrm{T}
+              \underline{\Sigma}^{-1} (\vec{x}-\vec{\mu})
+            \right)
+        \end{equation*}
+        with mean $\vec{\mu}$ and covariance matrix $\underline{\Sigma}$
+      \item Binomial distribution
+        \begin{equation*}
+          P(k|n,p) = \begin{pmatrix} n \\ k \end{pmatrix} p^k (1-p)^{n-k}
+          \quad\mathrm{for}\, k = 0, 1, \dots, n
+        \end{equation*}
+        describing the probability of getting $k$ successes in $n$ trials with a chance $p$ of getting a success in each trial
+      \item Poisson distribution
+      \begin{equation*}
+        P(k|\lambda) = \frac{\lambda^k}{k!}\,e^{-\lambda}
+      \end{equation*}
+      describing the chance of counting $k$ hits within a defined time interval under a given expectation $\lambda$.\\
+      It is a special case of the binomial distribution for small $p$ and many trials $n$
     \end{itemize}
   \end{frame}
 % </Important Distributions>
 
-\end{document}
+% <Exercises>
+  \begin{frame}{Exercises}
+    \begin{exampleblock}{Exercise}
+      \begin{enumerate}
+        \item 1
+      \end{enumerate}
+    \end{exampleblock}
+  \end{frame}
+% </Exercises>
+
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MINIMIZERS
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -530,3 +631,5 @@
     A
   \end{frame}
 % </Momentum Gradient Descent>
+
+\end{document}
