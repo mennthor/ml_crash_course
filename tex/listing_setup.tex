@@ -1,0 +1,38 @@
+% Input after \begin{document} needs mdframed, listings, xcolor package
+  % Make code snippets dark with rounded mdframe
+  \mdfsetup{%
+    backgroundcolor=col_bg,
+    roundcorner=5pt,
+    innerleftmargin=2em,  % 1em is for numbers
+    innerrightmargin=1em,
+    innertopmargin=0ex,
+    innerbottommargin=0ex,
+    skipabove=0.5\baselineskip,
+    skipbelow=0.5\baselineskip,
+  }
+  \lstset{
+    language=Python,  % Standard language
+    inputpath=snippets,  % Where to search for lstinputlisting files
+    tabsize=4,
+    showspaces=false,  % Show space hints
+    showstringspaces=true,
+    numbers=left,  % Line numbering
+    numbersep=1em,
+  }
+  \lstdefinestyle{dark}{%
+    title=\lsttitledark{\lstname},
+    basicstyle=\color{col_fg}\footnotesize\ttfamily,
+    numberstyle=\color{col_fg}\tiny,
+    commentstyle=\color{col_comment},
+    % identifierstyle=\color{col_identifier},  % Not defined for Python
+    keywordstyle=\color{col_keyword}\bfseries,
+    stringstyle=\color{col_string},
+    backgroundcolor=\color{col_bg},
+    emph={range, enumerate},  % Additional coloring for given keywords
+    emphstyle=\color{col_emph},
+  }
+  \lstdefinestyle{plain}{%
+    numbers=none,
+    basicstyle=\footnotesize\ttfamily,
+    numberstyle=\tiny,
+  }

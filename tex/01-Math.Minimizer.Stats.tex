@@ -1,9 +1,12 @@
-\include{header}
+\input{header}
 
 % Main title, author etc. in header
-\subtitle{Part I -- Math and Minimizers}
+\subtitle{Part I -- Math and Minimizers\\\vspace*{1.5ex}
+  \small \textbf{Goal:} Give a short reminder of the underlying math of machine learning algorithms
+}
 
 \begin{document}
+  \input{listing_setup}
   \maketitle
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,14 +27,14 @@
       \item Usually we write column vectors,
         \enquote{rotate} a vector up to get the transposed version
         \begin{equation*}
-          \left(v_1, v_2, \dots, v_n\right)^\mathrm{T} \coloneqq
+          \left(v_1, v_2, \dots, v_n\right)\transp \coloneqq
           \begin{pmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{pmatrix}
         \end{equation*}
       \item Vectors can be added by putting the end of one vector at the tip
         of another one. Equivalent to summing each individual components
         \begin{equation*}
           \vec{v} + \vec{w} =
-            \left(v_1 + w_1, v_2 + w_2, \dots, v_n + w_n\right)^\mathrm{T}
+            \left(v_1 + w_1, v_2 + w_2, \dots, v_n + w_n\right)\transp
         \end{equation*}
     \end{itemize}
   \end{frame}
@@ -42,8 +45,8 @@
         Multiply every component with the scalar $\alpha$
         \begin{equation*}
           \alpha \vec{v} =
-            \alpha \left(v_1, v_2, \dots, v_n\right)^\mathrm{T} =
-            \left(\alpha v_1, \alpha v_2, \dots, \alpha v_n\right)^\mathrm{T}
+            \alpha \left(v_1, v_2, \dots, v_n\right)\transp =
+            \left(\alpha v_1, \alpha v_2, \dots, \alpha v_n\right)\transp
         \end{equation*}
       \item Norm (length) of a vector
         \begin{equation*}
@@ -72,9 +75,9 @@
     \begin{exampleblock}{Exercise}
       We have two 4D vectors
       \begin{equation*}
-        \vec{v} = \left(1, -2, 5, 0\right)^\mathrm{T}
-        \quad\mathrm{and}\quad
-        \vec{w} = \left(2, 2, 3, -1\right)^\mathrm{T}
+        \vec{v} = \left(1, -2, 5, 0\right)\transp
+        \quad\text{and}\quad
+        \vec{w} = \left(2, 2, 3, -1\right)\transp
       \end{equation*}
       \begin{enumerate}
         \item Calculate the lengths $|\vec{v}|$, $|\vec{w}|$
@@ -111,13 +114,13 @@
         \end{equation*}
       \item We can identify column vectors with $(m, 1)$ matrices and row
         vectors with $(1, n)$ matrices
-        \begin{gather*}
+        \begin{equation*}
           \underline{M}_{1,n} = \left(v_1, \dots, v_n\right)
-            \leftrightarrow \vec{v}^\mathrm{T} \\
+            \leftrightarrow \vec{v}\transp \quad\text{and}\quad
           \underline{M}_{m, 1} =
             \begin{pmatrix}w_1 \\ \vdots \\ w_m \end{pmatrix}
             \leftrightarrow \vec{w}
-        \end{gather*}
+        \end{equation*}
     \end{itemize}
   \end{frame}
 
@@ -172,13 +175,13 @@
       \item The transpose of a matrix is obtained by switching
         elements $a_{ij}\leftrightarrow a_{ji}$
         \begin{equation*}
-          \underline{M}^\mathrm{T} =
+          \underline{M}\transp =
           \begin{pmatrix}
             a_{11} & a_{12} & \dots & a_{1n} \\
             a_{21} & a_{22} & \dots & a_{2n} \\
             \vdots & \vdots &  & \vdots \\
             a_{m1} & a_{m2} & \dots & a_{mn} \\
-          \end{pmatrix}^\mathrm{T} =
+          \end{pmatrix}\transp =
           \begin{pmatrix}
             a_{11} & a_{21} & \dots & a_{m1} \\
             a_{12} & a_{22} & \dots & a_{m2} \\
@@ -198,11 +201,11 @@
             using the definition above
           \item Note: Not every matrix has an inverse!
           \item For $(2,2)$ matrices the inverse can be explicitly calculated by
-            \begin{equation}
+            \begin{equation*}
               \begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} =
               \frac{1}{ad-bc}
                 \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}
-            \end{equation}
+            \end{equation*}
         \end{itemize}
     \end{itemize}
   \end{frame}
@@ -217,28 +220,28 @@
           \begin{equation*}
             \underline{A} =
               \begin{pmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{pmatrix}
-            \,\mathrm{, }\quad
+            \,\text{, }\quad
             \underline{B} =
               \begin{pmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{pmatrix}
-            \,\mathrm{, }\quad
+            \,\text{, }\quad
             \vec{v} = \begin{pmatrix} 4 \\ 5 \\ 6 \end{pmatrix}
           \end{equation*}
           Calculate $\underline{A}\,\underline{B}$,
           $\underline{B}\,\underline{A}$,
-          $\underline{A}\,\vec{v}$ and $\vec{v}^\mathrm{T}\,\underline{B}$.
+          $\underline{A}\,\vec{v}$ and $\vec{v}\transp\,\underline{B}$.
         \item Calculate the inverses (if existing) of
           \begin{equation*}
             \underline{A} =
               \begin{pmatrix} 1 & 2 \\ 4 & 2 \end{pmatrix}
-            \quad\mathrm{, }\quad
+            \quad\text{, }\quad
             \underline{B} =
               \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}
           \end{equation*}
         \item We have a matrix $\underline{M} = \underline{1}$
-          and a vector $\vec{v}^\mathrm{T} = \left(v_1, v_2, v_3\right)$.
+          and a vector $\vec{v}\transp = \left(v_1, v_2, v_3\right)$.
           Calculate
           \begin{equation*}
-            \vec{v}^\mathrm{T}\, \underline{M}\, \vec{v}
+            \vec{v}\transp\, \underline{M}\, \vec{v}
           \end{equation*}
       \end{enumerate}
     Again, use \texttt{numpy} or own code to check your results.
@@ -335,7 +338,7 @@
         \item[3] Now we try a 2D convolution.
           Convolve the following $8x8$ "grayscale image"
           \begin{equation*}
-            \mathrm{Img}_1 = \quad \begin{matrix}
+            \text{Img} = \quad \begin{matrix}
                 \ccb \tcw{0.0} & \ccga 0.5 & \ccga 0.5 & \ccga 0.5 & \ccga 0.5 & \ccga 0.5 & \ccga 0.5 & \ccb \tcw{0.0} \\
                 \ccb \tcw{0.0} & \ccb \tcw{0.0} & \ccga 0.5 & \ccga 0.5 & \ccga 0.5 & \ccga 0.5 & \ccb \tcw{0.0} & \ccb \tcw{0.0} \\
                 \ccb \tcw{0.0} & \ccb \tcw{0.0} & \ccb \tcw{0.0} & \ccb \tcw{0.0} & \ccb \tcw{0.0} & \ccb \tcw{0.0} & \ccb \tcw{0.0} & \ccb \tcw{0.0} \\
@@ -405,9 +408,9 @@
       \end{equation*}
       \item Additionally there are rules that can be used when multiple functions are combined in a special arrangement ($f' \leftrightarrow \dderiv{f}{x}$)
       \begin{align*}
-        (f + g)' &= f' + g' &&\quad\mathrm{sum\,rule} \\
-        (f \cdot g)' &= f' \cdot g + f \cdot g' &&\quad\mathrm{product\,rule} \\
-        (g \circ f)' &= g'(f) \cdot f' &&\quad\mathrm{chain\,rule}
+        (f + g)' &= f' + g' &&\quad\text{sum\,rule} \\
+        (f \cdot g)' &= f' \cdot g + f \cdot g' &&\quad\text{product\,rule} \\
+        (g \circ f)' &= g'(f) \cdot f' &&\quad\text{chain\,rule}
       \end{align*}
       \item The chain rule is excessively used in the back-propagation algorithm to compute the gradient of a neural network
       \item The same differentiation rules hold for many parameter and vector functions \textbf{but the order matters, because we are dealing with vectors and matrices instead of single numbers}
@@ -457,19 +460,19 @@
     \begin{itemize}
       \item Continuous distribution of a random variable $X$
         \begin{equation*}
-          f(x) \quad\mathrm{with}\quad \int_\Omega f(x) \deriv{x} = 1
+          f(x) \quad\text{with}\quad \int_\Omega f(x) \deriv{x} = 1
         \end{equation*}
         and $f(x) \geq 0$
       \item Discrete distribution of a random variable $X$
         \begin{equation*}
-          P(x_i) \quad\mathrm{with}\quad \sum_{x_i\in\chi} P(x_i) = 1
+          P(x_i) \quad\text{with}\quad \sum_{x_i\in\chi} P(x_i) = 1
         \end{equation*}
         and $P(x_i) \geq 0$
       \item Cumulative distribution functions define the probability contained up to a specific interval:
       \begin{equation*}
         F(x) = \int_{\chi_0}^x f(x) \deriv{x}
-        \quad \mathrm{and} \quad
-        F(n) = \sum_{i=i_\mathrm{min}}^n P(x_i)
+        \quad \text{and} \quad
+        F(n) = \sum_{i=i_\text{min}}^n P(x_i)
       \end{equation*}
       for the continuous and the discrete (only when there is an explicit order) case respectively
     \end{itemize}
@@ -482,19 +485,19 @@
       \item The mean $<x>$ of a distribution $f(x)$ is defined as
         \begin{equation*}
           \langle x\rangle = \int_\chi xf(x) \deriv{x}
-          \quad\mathrm{or}\quad
+          \quad\text{or}\quad
           \langle x\rangle = \sum_{x_i\in\chi} x_iP(x_i)
         \end{equation*}
       \item In general, the expectation value $E[h]$ of a function $h(x)$ considering the distribution $f(x)$ ($P(x_i)$) of $x$ is defined as
         \begin{equation*}
           E[h] = \int_\chi h(x)f(x) \deriv{x}
-          \quad\mathrm{or}\quad
+          \quad\text{or}\quad
           E[h] = \sum_{x_i\in\chi} h(x_i)P(x_i)
         \end{equation*}
       \item Another important summary statistic is the variance
         \begin{equation*}
           \Var[x] = \int_\chi (x-\langle x\rangle)^2 f(x) \deriv{x}
-          \quad\mathrm{or}\quad
+          \quad\text{or}\quad
           \Var[x] = \sum_{x_i\in\chi} (x_i - \langle x\rangle)^2 P(x_i)
         \end{equation*}
         often used to characterize the width of a distribution
@@ -511,7 +514,7 @@
       \item In cases with more than two variables the covariance between to random variables $(x, y)$ is defined equivalently as
         \begin{align*}
           \Cov[x, y] &= \int_\chi (x-\langle x\rangle)(y-\langle y\rangle) f(x,y) \deriv{x, y}
-          \quad\mathrm{or}\quad \\
+          \quad\text{or}\quad \\
           \Cov[x, y] &= \sum_{x_i,y_i\in\chi}(x_i - \langle x\rangle)(y_i - \langle y\rangle) P(x_i, y_i)
         \end{align*}
         with the joint distributions $f$ ($P$) of $x, y$
@@ -533,13 +536,13 @@
       \item We can marginalize a multidimensional distribution by integrating (or summing) over all but one variable
         \begin{equation*}
           f(x) = \int_\mathcal{Y}f(x,y)\deriv{y}
-          \quad\mathrm{or}\quad
+          \quad\text{or}\quad
           P(x) = \sum_{y_i\in\mathcal{Y}} P(x_i, y_i)
         \end{equation*}
         \item The following intuitive properties can be visualized and understood using Venn diagrams
           \begin{align*}
-            P(A\,\mathrm{or}\,B) &= P(A) + P(B) - P(A\,\mathrm{and}\,B) \\
-            P(A\,\mathrm{and}\,B) &= P(A) P(B|A) = P(B) P(A|B)
+            P(A\,\text{or}\,B) &= P(A) + P(B) - P(A\,\text{and}\,B) \\
+            P(A\,\text{and}\,B) &= P(A) P(B|A) = P(B) P(A|B)
           \end{align*}
         \item From these the Bayes rule follows
           \begin{equation*}
@@ -561,7 +564,7 @@
           \mathcal{N}(\vec{x}|\vec{\mu},\underline{\Sigma})
           = \frac{\det{\underline{\Sigma}^{-1}}}{(2\pi)^{d/2}}
             \exp\left(
-              -\frac{1}{2} (\vec{x}-\vec{\mu})^\mathrm{T}
+              -\frac{1}{2} (\vec{x}-\vec{\mu})\transp
               \underline{\Sigma}^{-1} (\vec{x}-\vec{\mu})
             \right)
         \end{equation*}
@@ -569,7 +572,7 @@
       \item Binomial distribution
         \begin{equation*}
           P(k|n,p) = \begin{pmatrix} n \\ k \end{pmatrix} p^k (1-p)^{n-k}
-          \quad\mathrm{for}\, k = 0, 1, \dots, n
+          \quad\text{for}\, k = 0, 1, \dots, n
         \end{equation*}
         describing the probability of getting $k$ successes in $n$ trials with a chance $p$ of getting a success in each trial
       \item Poisson distribution
@@ -595,41 +598,157 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MINIMIZERS
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \section{Minimization}
+  \section{Minimization and Gradient Descent}
 % <Analytical>
-  \begin{frame}{Analytical}
-    A
+  \begin{frame}{Overview}
+    \begin{itemize}
+      \item Analytically we can find all stationary points of a (reasonably normal) function by finding the point where the first derivative is zero (or gradient for multidimensional functions)
+      \begin{equation*}
+        \dderiv{f}{x} = 0 \quad\text{or}\quad\nabla_{\vec{x}}f = \vec{0}
+      \end{equation*}
+      \item Any minima also needs to have a second derivative smaller than zero (or a positive definite Hessian)
+      \item However, numerically finding the global minimum is extremely hard in general but multiple strategies exist for finding a local one (bisection, Newton methods, gradient descent, ...)
+      \item Here we focus on the gradient descent method as it is widely used due to it's simplicity and its reliance on the gradient only
+      \begin{itemize}
+        \item Another popular method, especially used for root finding is the Newton method.
+        However due to its costly need for inverse second derivatives, it is seldom used in high dimensional optimization problems
+        \item Some approximative methods exist, that try to approximate the inverse second derivatives with a reasonable amount of computation
+        \item Read \url{docs.scipy.org/doc/scipy/reference/tutorial/optimize.html} for a nice overview
+      \end{itemize}
+    \end{itemize}
   \end{frame}
 % </Analytical>
 
-% <Bisection>
-  \begin{frame}{Bisection}
-    A
-  \end{frame}
-% </Bisection>
-
-% <Newton Methods>
-  \begin{frame}{Newton Methods}
-    A
-  \end{frame}
-% </Newton Methods>
-
 % <Gradient Descent>
-  \begin{frame}{Gradient Descent}
-    A
+  \begin{frame}[fragile]{Gradient Descent}
+    \begin{itemize}
+      \item Function decreases the fastest in the direction of the negative gradient
+      \item Define iterative method
+        \begin{equation*}
+          \vec{\theta}_{i+1}
+          = \vec{\theta}_i - \gamma_i (\nabla_{\vec{\theta}}f)(\vec{\theta}_i)
+        \end{equation*}
+        with a \enquote{suitably small} step size $\gamma_i$ (often also called \enquote{learning rate})
+      \item The chose of the step size is crucial. Too small and the convergence is very slow, too large and convergence cannot be guaranteed
+      \item Selecting the proper step size $\gamma_i$ is often done using a \enquote{line search} algorithm, which tries to find a minimum along the gradient direction, making it a 1D sub-problem
+      \begin{equation*}
+        \gamma_i = \argmin_\gamma F(\gamma) \minter{with}
+        F(\gamma) = f(x + \gamma (\nabla_{\vec{\theta}}f)(\vec{\theta}_i))
+      \end{equation*}
+    \end{itemize}
+    \begin{mdframed}
+      \begin{lstlisting}[style=dark, gobble=6, title=\lsttitlelight{Example Implementation}]
+        for i in range(nepochs):
+            grad = get_gradient(func, params, data)
+            params = params - learning_rate * grad
+      \end{lstlisting}
+    \end{mdframed}
+  \end{frame}
+
+  \begin{frame}{Gradient Descent - Example}
+    \includegraphics[width=\textwidth]{01-img-gradient_descent.png}
   \end{frame}
 % </Gradient Descent>
 
 % <Stochastic Gradient Descent>
-  \begin{frame}{Stochastic Gradient Descent}
-    A
+  \begin{frame}[fragile]{Stochastic Gradient Descent}
+    \begin{itemize}
+      \item For loss functions, the function value and thus the gradient usually depend on a sum of functions over all considered data samples $\{x\}, \{y\}$: $L(\theta, \{x\}, \{y\}) = \sum_n f(\theta | x_n, y_n)$
+      \item For a gradient descent step the sum over all gradients must be calculated, which can be very costly for high dimensional data and / or a large training sample $\theta_{i+1} = \theta_i - \gamma_i \sum_n \nabla f(\theta_i | x_n, y_n)$
+      \item Stochastic gradient descent therefore only uses a single data point to update the gradient in each iteration to update the parameters
+      \begin{equation*}
+        \theta_{i+1} = \theta_i - \gamma_i f(\theta_i | x_n, y_n)
+      \end{equation*}
+      \begin{itemize}
+        \item This enables to train on every new example (\enquote{online}) and speeds the process up
+        \item But also introduces more variance in the descent step
+      \end{itemize}
+    \end{itemize}
+    \begin{mdframed}
+      \begin{lstlisting}[style=dark, gobble=6, title=\lsttitlelight{Example Implementation}]
+        for i in range(nepochs):
+            data = random_shuffle(data)
+            for single_data_point in data:
+              grad = get_gradient(func, params, single_data_point)
+              params = params - learning_rate * grad
+      \end{lstlisting}
+    \end{mdframed}
+  \end{frame}
+
+  \begin{frame}[fragile]{Stochastic Gradient Descent}
+    \begin{itemize}
+      \item \enquote{Mini-batch} gradient descent is a hybrid solution uses a a subset $1 < N_B < N$ of randomly sampled data point in each update step
+      \begin{equation*}
+        \theta_{i+1}
+        = \theta_i - \gamma_i \sum_n^{N_s} \nabla f(\theta_i | x_n, y_n)
+      \end{equation*}
+      \begin{description}
+        \item[\enquote{batch-size}] is the number of data points $N_B$ used per gradient update step
+        \item[An \enquote{epoch}:] is over when the whole training set was exactly used once to update the parameters
+        \item[A \enquote{step}] is the single gradient update step, from which there are $N / N_S$
+      \end{description}
+      \item If training for more than one epoch, the data is usually shuffled in each one to prevent using the exact same batches in the exact same order every time
+    \end{itemize}
+    \begin{mdframed}
+      \begin{lstlisting}[style=dark, gobble=6, title=\lsttitlelight{Example Implementation}]
+        for i in range(nepochs):
+            data = random_shuffle(data)
+            for batch_data in get_batch(data, size=batch_size):
+              grad = get_gradient(func, params, batch_data)
+              params = params - learning_rate * grad
+      \end{lstlisting}
+    \end{mdframed}
   \end{frame}
 % </Stochastic Gradient Descent>
 
 % <Momentum Gradient Descent>
   \begin{frame}{Momentum Gradient Descent}
-    A
+    \begin{itemize}
+      \item For the usually high dimensional and non-convex loss function encountered in deep learning applications, standard gradient descent tends to get stuck in local minima, overshoot the global one or converge very slow in steep and long \enquote{valleys} of the loss function.
+      \item To counter these issues, momentum gradient descent can be used
+      \item Momentum gradient descent uses a linear combination of the current and last gradient, which acts like persisting momentum in a physical sense and enables the gradient descent step to move over small local minima
+      \begin{align*}
+        \vec{\theta}_{i+1} &= \vec{\theta}_i
+          - \gamma_i (\nabla_{\vec{\theta}}f)(\vec{\theta}_i)
+          + \alpha\Delta \vec{\theta}_i \\
+        \text{where}\quad \Delta x_i &= \vec{\theta}_i - \vec{\theta}_{i-1}
+          = \alpha \Delta \vec{\theta}_{i-1}
+            - \gamma_{i-1} (\nabla_{\vec{\theta}}f)(\vec{\theta}_{i-1})
+      \end{align*}
+      with $\alpha\in[0, 1]$
+      \item For stochastic gradient descent, using momentum decreases the variance the weighted averaging over two gradient steps.
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{Momentum Gradient Descent - Example}
+    \includegraphics[width=\textwidth]{01-img-gradient_descent_momentum.png}
   \end{frame}
 % </Momentum Gradient Descent>
+
+% <Exercises>
+  \begin{frame}{Exercises}
+    \begin{exampleblock}{Exercise}
+      \begin{enumerate}
+        \item Why is line search not used in stochastic gradient descent methods? What is used instead in stochastic gradient descent to adapt the step size?
+        Read \url{keras.io/optimizers} for a good overview of popular deep learning minimizers.
+        \item Find the stationary points of the univariate function $f(x) = x^3 + 6x^2 - 3x - 5$ and indicate whether they are maxima, minima or saddle points.
+        \item Calculate the analytic gradient of the quadratic function
+          \begin{equation*}
+            g\left( \begin{bmatrix}x_1 \\ x_2 \end{bmatrix} \right)
+            = \frac{1}{2}
+              \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}^\transp
+              \begin{bmatrix} 2 & 1 \\ 1 & 20 \end{bmatrix}
+              \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
+              - \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}^\transp
+                \begin{bmatrix} 5 \\ 3 \end{bmatrix}
+          \end{equation*}
+          Before doing the calculation, try to determine the dimension of the gradient.
+        \item For the function $g$ above, use the gradient descent algorithm to find the minimum and track the steps. Start from $\vec{x}_0 = \left[-3, -1\right]^\transp$, break if the function value does not change more than $10^{-3}$.
+        Play around with different learning rates (Tip: $\gamma = 0.085$ works well).
+        \item Use the weight matrix $[[2, 1], [1, 200]]$ for $g$ instead and see how standard gradient descent has problems. Use momentum to counteract them and compare.
+      \end{enumerate}
+    \end{exampleblock}
+  \end{frame}
+% </Exercises>
 
 \end{document}

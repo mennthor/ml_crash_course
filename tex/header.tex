@@ -1,0 +1,62 @@
+\documentclass[9pt, table, aspectratio=169]{beamer}
+  \usetheme[block=fill]{metropolis}  % https://github.com/matze/mtheme
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{graphicx}
+  \graphicspath{{build/assets/}}
+
+% <Setup dark code environment>
+\usepackage[framemethod=tikz]{mdframed}  % Fixes white stripes in listing bg
+\usepackage{listings}
+% Color defs for lstlisting code syntax highlighting
+% Nord colors from https://github.com/arcticicestudio/nord
+\input{nord_colors}
+\colorlet{col_bg}{nordDarkLight}
+\colorlet{col_fg}{nordBrightLightest}
+\colorlet{col_comment}{nordFrostBlueGrey}
+\colorlet{col_keyword}{nordAuroraGreen}
+\colorlet{col_string}{nordAuroraYellow}
+\colorlet{col_identifier}{nordAuroraPurple}
+\colorlet{col_emph}{nordFrostBlueLight}
+\newcommand{\lsttitledark}[1]{\textit{\texttt{\scriptsize#1}}}
+\newcommand{\lsttitlelight}[1]{\color{col_fg}\textit{\texttt{\scriptsize#1}}}
+% </Setup dark code environment>
+
+\title{Machine Learning}
+\date{Created in 2020}
+\author{Thorben Menne}
+
+\newcommand{\deriv}[1]{\mathrm{d}#1}
+\newcommand{\dderiv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\del}[1]{\partial #1}
+\newcommand{\ddel}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand{\minter}[1]{\quad\text{#1}\quad}
+\newcommand{\mdot}{\quad\text{.}}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\transp}{\text{T}}
+
+\newcommand{\tcw}[1]{\textcolor{white}{#1}}
+\newcommand{\tcb}[1]{\textcolor{black}{#1}}
+\newcommand{\ccw}{\cellcolor{white}}
+\newcommand{\ccga}{\cellcolor{black!50}}
+\newcommand{\ccgb}{\cellcolor{black!40}}
+\newcommand{\ccgc}{\cellcolor{black!30}}
+\newcommand{\ccb}{\cellcolor{black}}
+
+% Buffer slides for subsections (tex.stackexchange.com/questions/117658)
+\AtBeginSubsection[]{
+  \begin{frame}
+    \subsectionpage
+  \end{frame}
+}
