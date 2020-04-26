@@ -635,6 +635,10 @@
         \gamma_i = \argmin_\gamma F(\gamma) \minter{with}
         F(\gamma) = f(x + \gamma (\nabla_{\vec{\theta}}f)(\vec{\theta}_i))
       \end{equation*}
+      \begin{itemize}
+        \item A simple approach is backtracking: If $f(\vec{\theta}_{i+1}) \geq f(\vec{\theta}_i)$, decrease learning rate and try again
+      \end{itemize}
+      \item Often a fixed learning rate decay schedule (eg. exponential) is preferred, to step more carefully when further advanced or some heuristics are used to adapt the learning rate
     \end{itemize}
     \begin{mdframed}
       \begin{lstlisting}[style=dark, gobble=6, title=\lsttitlelight{Example Implementation}]
@@ -645,8 +649,18 @@
     \end{mdframed}
   \end{frame}
 
-  \begin{frame}{Gradient Descent - Example}
+  \begin{frame}{Gradient Descent - Example with different learning rates}
+    \begin{itemize}
+      \item Using a constant learning rate is very problem dependent and usually not recommended as it needs a lot of fine tuning.
+    \end{itemize}
     \includegraphics[width=\textwidth]{01-img-gradient_descent.png}
+  \end{frame}
+  \begin{frame}{Gradient Descent - Example of very simple backtracking adaptive step size}
+    \begin{itemize}
+      \item Adaptive learning rate with very simple backtracking approach.
+    Learning rate can only decrease and is reset to original value in each descent step.
+    \end{itemize}
+    \includegraphics[width=\textwidth]{01-img-gradient_descent_B.png}
   \end{frame}
 % </Gradient Descent>
 
@@ -717,10 +731,17 @@
       \end{align*}
       with $\alpha\in[0, 1]$
       \item For stochastic gradient descent, using momentum decreases the variance the weighted averaging over two gradient steps.
+      \begin{itemize}
+        \item Typically $\alpha$ is set between $0.5$ and $0.9$ but needs to be tuned per problem.
+      \end{itemize}
+      \item Read \url{keras.io/optimizers} for a good overview of popular deep learning minimizers and what strategies they use to try to minimize the parameter tuning
     \end{itemize}
   \end{frame}
 
-  \begin{frame}{Momentum Gradient Descent - Example}
+  \begin{frame}{Momentum Gradient Descent - Example using momentum in valleys}
+    \begin{itemize}
+      \item Using momentum can help to converge faster (or at all) in valley-like environments.
+    \end{itemize}
     \includegraphics[width=\textwidth]{01-img-gradient_descent_momentum.png}
   \end{frame}
 % </Momentum Gradient Descent>
@@ -729,23 +750,24 @@
   \begin{frame}{Exercises}
     \begin{exampleblock}{Exercise}
       \begin{enumerate}
-        \item Why is line search not used in stochastic gradient descent methods? What is used instead in stochastic gradient descent to adapt the step size?
-        Read \url{keras.io/optimizers} for a good overview of popular deep learning minimizers.
+        \item Why is an exact or sophisticated line search approach not used in stochastic gradient descent methods?
         \item Find the stationary points of the univariate function $f(x) = x^3 + 6x^2 - 3x - 5$ and indicate whether they are maxima, minima or saddle points.
         \item Calculate the analytic gradient of the quadratic function
           \begin{equation*}
             g\left( \begin{bmatrix}x_1 \\ x_2 \end{bmatrix} \right)
             = \frac{1}{2}
+              \vec{x}^\transp \underline{W}\, \vec{x} + \vec{x}^\transp \vec{b}
+            = \frac{1}{2}
               \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}^\transp
               \begin{bmatrix} 2 & 1 \\ 1 & 20 \end{bmatrix}
               \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
-              - \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}^\transp
-                \begin{bmatrix} 5 \\ 3 \end{bmatrix}
+              + \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}^\transp
+                \begin{bmatrix} -5 \\ -3 \end{bmatrix}
           \end{equation*}
           Before doing the calculation, try to determine the dimension of the gradient.
         \item For the function $g$ above, use the gradient descent algorithm to find the minimum and track the steps. Start from $\vec{x}_0 = \left[-3, -1\right]^\transp$, break if the function value does not change more than $10^{-3}$.
         Play around with different learning rates (Tip: $\gamma = 0.085$ works well).
-        \item Use the weight matrix $[[2, 1], [1, 200]]$ for $g$ instead and see how standard gradient descent has problems. Use momentum to counteract them and compare.
+        \item Use the weight matrix $[[2, 1], [1, 200]]$ for $g$ instead and see how standard gradient descent has problems. Use momentum or adaptive learning rate to counteract them and compare.
       \end{enumerate}
     \end{exampleblock}
   \end{frame}
