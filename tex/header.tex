@@ -1,5 +1,8 @@
 \documentclass[9pt, table, aspectratio=169]{beamer}
-  \usetheme[block=fill]{metropolis}  % https://github.com/matze/mtheme
+  \usetheme[
+    block=fill,
+    subsectionpage=none
+    ]{metropolis}  % https://github.com/matze/mtheme
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -27,6 +30,12 @@
 \newcommand{\lsttitlelight}[1]{\color{col_fg}\textit{\texttt{\scriptsize#1}}}
 % </Setup dark code environment>
 
+% Customize the theme colors a bit to use nord but same shaed as original theme
+\setbeamercolor{frametitle}{fg=nordBrightLightest,bg=nordDarkBase}
+\setbeamercolor{title separator}{fg=nordAuroraOrange,bg=nordBrightBase}
+\setbeamercolor{progress bar in section page}{%
+  fg=nordAuroraOrange,bg=nordBrightBase}
+
 \title{Machine Learning}
 \date{Created in 2020}
 \author{Thorben Menne}
@@ -53,10 +62,3 @@
 \newcommand{\ccgb}{\cellcolor{black!40}}
 \newcommand{\ccgc}{\cellcolor{black!30}}
 \newcommand{\ccb}{\cellcolor{black}}
-
-% Buffer slides for subsections (tex.stackexchange.com/questions/117658)
-\AtBeginSubsection[]{
-  \begin{frame}
-    \subsectionpage
-  \end{frame}
-}
