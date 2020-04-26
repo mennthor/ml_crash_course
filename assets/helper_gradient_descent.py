@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def grad_desc_momentum(func, theta0, lrate=0.001, mu=0, nsteps=100):
+def grad_desc_momentum(func, theta0, lrate=0.001, mu=0, nsteps=100, adaptive=False):
     """
     Parameters
     ----------
@@ -16,6 +16,11 @@ def grad_desc_momentum(func, theta0, lrate=0.001, mu=0, nsteps=100):
         Momentum strength in [0, 1], if 0 we have standard GD. (default: 0)
     nsteps : int
         Number of gradient steps. (default: 100)
+    adaptive : bool
+        If True, uses simple backtracking to adapt the step size.  At each
+        step, the original lrate is used. But if the function does not decrease,
+        it is halfed for at most 10 steps until the new function value
+        decreases. (default: False)
 
     Returns
     -------
@@ -33,20 +38,32 @@ def grad_desc_momentum(func, theta0, lrate=0.001, mu=0, nsteps=100):
     if nsteps < 1:
         raise ValueError("nsteps must be >= 1")
 
-    params, values, gradients = [], [], []
     theta = np.atleast_1d(theta0)
-    last_step = theta  # Initial momentum is zero with this choice
-    for i in range(nsteps):
+    val, grad = func(theta)
+    params, values, gradients = [theta, theta], [val], [grad]
+    nadaptive_max = 1  # Non adative lrate
+    if adaptive:
+        nadaptive_max = 10  # Max tries for adaptive step size to avoid inf loop
+    for _ in range(nsteps):
+        _lrate = lrate
+        _old_val = val
+        for _ in range(nadaptive_max):
+            # Momentum update: momentum = last step taken = lrate * grad[i-1]
+            momentum = params[-1] - params[-2]
+            # Gradient descent step
+            theta = params[-1] - _lrate * grad + mu * momentum
+
+            val, grad = func(theta)
+            if adaptive:
+                # Check if func value descreased
+                if val < _old_val:
+                    break
+                else:
+                    _lrate /= 2.  # Just half it and try again
+
         params.append(theta)
-
-        # Get new gradients
-        val, grad = func(theta)
-        # Momentum update
-        dparams = theta - last_step  # = lrate * grad[i-1]
-        last_step = theta
-        # Gradient descent step
-        theta = theta - lrate * grad + mu * dparams
-
         values.append(val)
         gradients.append(grad)
-    return np.array(params), np.squeeze(values), np.atleast_2d(gradients)
+
+    # Delete double first helper entry before returning
+    return np.array(params[1:]), np.squeeze(values), np.atleast_2d(gradients)

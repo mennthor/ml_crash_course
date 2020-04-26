@@ -34,9 +34,9 @@ def make_values(momentum):
     # Do GD
     theta0 = [-3., -1.]
     nsteps = 100
-    lrate = 0.012
+    lrate = 0.01  # Use 0.012 for non-converging with fixed lrate
     params, values, gradients = grad_desc_momentum(
-        loss, theta0, lrate=lrate, mu=momentum, nsteps=nsteps)
+        loss, theta0, lrate=lrate, mu=momentum, nsteps=nsteps, adaptive=False)
 
     # Generate loss function surface
     xmin, xmax = -4, 4
@@ -61,6 +61,8 @@ def make_values(momentum):
 
 mu_good, mu_none = 0.7, 0
 true_min, params_good, XX, YY, ZZ_good, converged_good = make_values(mu_good)
+# Using adaptive step size in the second example ensures convergence also for
+# lrate = 0.012, but much slower than with using momentum and fixed lrate
 _, params_none, _, _, ZZ_none, converged_none = make_values(mu_none)
 
 # Plot it

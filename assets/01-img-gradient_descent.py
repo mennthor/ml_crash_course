@@ -24,7 +24,7 @@ def quadratic(params, weights, bias):
     return func, grad
 
 
-def make_values(lrate):
+def make_values(lrate, adaptive=False):
     """ Helper to generate plot values """
     # Setup function
     weights = np.array([[2., 1.], [1., 20.]])
@@ -36,7 +36,7 @@ def make_values(lrate):
     theta0 = [-3., -1.]
     nsteps = 100
     params, values, gradients = grad_desc_momentum(
-        loss, theta0, lrate=lrate, mu=0, nsteps=nsteps)  # No momentum
+        loss, theta0, lrate=lrate, mu=0, nsteps=nsteps, adaptive=adaptive)
 
     # Generate loss function surface
     xmin, xmax = -4, 4
@@ -59,10 +59,10 @@ def make_values(lrate):
     return true_min, params, XX, YY, ZZ, converged_idx
 
 
-# Main
-lrate_good, lrate_bad = 0.085, 0.1
+# Main: Constant good vs too low
+lrate_good, lrate_low = 0.085, 0.01
 true_min, params_good, XX, YY, ZZ_good, converged_good = make_values(lrate_good)
-_, params_bad, _, _, ZZ_bad, converged_bad = make_values(lrate_bad)
+_, params_low, _, _, ZZ_low, converged_low = make_values(lrate_low)
 
 # Plot it
 fig, (axl, axr) = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
@@ -76,17 +76,17 @@ axl.plot(true_min[0], true_min[1], marker="o", c="w")
 axl.set_xlabel("$x_1$")
 axl.set_ylabel("$x_2$")
 axl.set_title(
-    "Good learning rate: {}".format(converged_good))
+    "Good learning rate ({:.3f}): {}".format(lrate_good, converged_good))
 
 # Right: Bad learning rate
-axr.contourf(XX, YY, ZZ_bad, cmap="magma")
-axr.contour(XX, YY, ZZ_bad, colors="w", alpha=0.5)
+axr.contourf(XX, YY, ZZ_low, cmap="magma")
+axr.contour(XX, YY, ZZ_low, colors="w", alpha=0.5)
 
-axr.plot(params_bad[:, 0], params_bad[:, 1], c="C0", marker="o")
+axr.plot(params_low[:, 0], params_low[:, 1], c="C0", marker="o")
 axr.plot(true_min[0], true_min[1], marker="o", c="w")
 
 axr.set_title(
-    "Bad learning rate: {}".format(converged_bad))
+    "Too low learning rate ({:.2f}): {}".format(lrate_low, converged_low))
 
 for axi in (axl, axr):
     axi.set_xlabel("$x_1$")
@@ -97,4 +97,46 @@ for axi in (axl, axr):
 
 fig.tight_layout()
 plt.savefig("../build/assets/01-img-gradient_descent.png", dpi=200)
+# plt.show()
+
+
+# Secondary plot: Too high vs adaptive
+lrate_hig, lrate_ada = 0.1, 0.1
+true_min, params_hig, XX, YY, ZZ_hig, converged_hig = make_values(lrate_hig)
+_, params_ada, _, _, ZZ_ada, converged_ada = make_values(
+    lrate_ada, adaptive=True)
+
+# Plot it
+fig, (axl, axr) = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
+# Left: Good learning rate
+axl.contourf(XX, YY, ZZ_hig, cmap="magma")
+axl.contour(XX, YY, ZZ_hig, colors="w", alpha=0.5)
+
+axl.plot(params_hig[:, 0], params_hig[:, 1], c="C0", marker="o")
+axl.plot(true_min[0], true_min[1], marker="o", c="w")
+
+axl.set_xlabel("$x_1$")
+axl.set_ylabel("$x_2$")
+axl.set_title(
+    "Too high learning rate ({:.1f}): {}".format(lrate_hig, converged_hig))
+
+# Right: Bad learning rate
+axr.contourf(XX, YY, ZZ_ada, cmap="magma")
+axr.contour(XX, YY, ZZ_ada, colors="w", alpha=0.5)
+
+axr.plot(params_ada[:, 0], params_ada[:, 1], c="C0", marker="o")
+axr.plot(true_min[0], true_min[1], marker="o", c="w")
+
+axr.set_title(
+    "Adaptive learning rate ({:.1f}): {}".format(lrate_ada, converged_ada))
+
+for axi in (axl, axr):
+    axi.set_xlabel("$x_1$")
+    if axi == axl:
+        axi.set_ylabel("$x_2$")
+    axi.set_xlim(-4, 4)
+    axi.set_ylim(-2, 2)
+
+fig.tight_layout()
+plt.savefig("../build/assets/01-img-gradient_descent_B.png", dpi=200)
 # plt.show()
