@@ -8,7 +8,7 @@ TEXCOPTS = --output-directory=$(BUILD_DIR) --halt-on-error
 TEXDIR = tex
 export TEXINPUTS=./:./$(TEXDIR):
 
-# Collect asset targets, target must be named as script, one target per script
+# Manually specify asset targets, target must be named as script, one target per script
 ASSET_TARGETS := $(BUILD_DIR)/$(ASSET_DIR)/01-img-gradient_descent.png
 ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-gradient_descent_momentum.png
 
@@ -18,9 +18,6 @@ TEXDEPS = $(TEXDIR)/header.tex $(TEXDIR)/listing_setup.tex $(TEXDIR)/nord_colors
 
 # Define targets = separate PDFs
 TARGET01 = 01-Math.Minimizer.Stats
-
-# Define target asset dependencies
-# TODO
 
 
 all: $(TARGET01)
@@ -34,7 +31,7 @@ $(BUILD_DIR)/%.pdf: $(TEXDIR)/%.tex $(TEXDEPS) $(ASSET_TARGETS) | $(BUILD_DIR)
 	latexmk --$(TEXC) -pvc $(TEXCOPTS) $<
 
 
-# Manual list of asset targets
+# Creates needed assets from script with same name, one img per script
 $(BUILD_DIR)/$(ASSET_DIR)/%.png: $(ASSET_DIR)/%.py | $(BUILD_DIR)
 	cd $(ASSET_DIR) && python $(subst $(ASSET_DIR)/,,$<)
 
