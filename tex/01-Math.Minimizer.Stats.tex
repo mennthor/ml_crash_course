@@ -515,7 +515,7 @@
 % </Derivatives>
 
 % <Vector Functions>
-  \begin{frame}{$\mathbf{R}^n$ and Vector Functions}
+  \begin{frame}[fragile]{$\mathbf{R}^n$ and Vector Functions}
     \begin{itemize}
       \item For functions with more than one input parameter we already saw the partial derivative
       \item The gradient collects all possible derivatives in a new vector pointing along the direction of steepest ascent for functions $f:\mathbf{R}^n\rightarrow \mathbf{R}$
@@ -534,6 +534,13 @@
           \end{pmatrix}_{(m, n)}
       \end{equation*}
     \end{itemize}
+    \begin{mdframed}
+      \begin{lstlisting}[style=dark, gobble=8, title=\lsttitlelight{Checking gradients numerically}]
+        x = np.linspace(-10, 10, 200)
+        y = np.sin(x) * np.cos(x)
+        dy_num = np.gradient(y, x)
+      \end{lstlisting}
+    \end{mdframed}
   \end{frame}
 % </Vector Functions>
 
@@ -572,18 +579,18 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \section{Statistics}
 % <Probabilities>
-  \begin{frame}{Probabilities}
+  \begin{frame}[fragile]{Probabilities}
     \begin{itemize}
       \item Continuous distribution of a random variable $X$
         \begin{equation*}
           f(x) \quad\text{with}\quad \int_\Omega f(x) \deriv{x} = 1
         \end{equation*}
-        and $f(x) \geq 0$
+        and $f(x) \geq 0$ (probability density function, \enquote{pdf})
       \item Discrete distribution of a random variable $X$
         \begin{equation*}
           P(x_i) \quad\text{with}\quad \sum_{x_i\in\chi} P(x_i) = 1
         \end{equation*}
-        and $P(x_i) \geq 0$
+        and $P(x_i) \geq 0$ (probability mass function, \enquote{pmf})
       \item Cumulative distribution functions define the probability contained up to a specific interval:
       \begin{equation*}
         F(x) = \int_{\chi_0}^x f(x) \deriv{x}
@@ -592,11 +599,21 @@
       \end{equation*}
       for the continuous and the discrete (only when there is an explicit order) case respectively
     \end{itemize}
+    \begin{mdframed}
+      \begin{lstlisting}[style=dark, gobble=8, title=\lsttitlelight{Cumulative distribution function for discrete PDF}]
+        pdf = np.array([0.6, 0.3, 0.1])
+        print( np.cumsum(pdf) )  # [0.6, 0.3, 0.1] Note: Is missing first 0
+      \end{lstlisting}
+    \end{mdframed}
+  \end{frame}
+
+  \begin{frame}{PDF and CDF Example -- Discrete and Continuous}
+    \includegraphics[width=\textwidth]{01-img-distributions.png}
   \end{frame}
 % </Probabilities>
 
 % <Mean and Variance>
-  \begin{frame}{Mean and Variance}
+  \begin{frame}[fragile]{Mean and Variance}
     \begin{itemize}
       \item The mean $<x>$ of a distribution $f(x)$ is defined as
         \begin{equation*}
@@ -621,11 +638,17 @@
           \item The standard deviation $\sigma_x = \sqrt{\Var[x]}$ is also often used, because it has the same dimension as the random variable itself
         \end{itemize}
     \end{itemize}
+    \begin{mdframed}
+      \begin{lstlisting}[style=dark, gobble=8, title=\lsttitlelight{Cumulative distribution function for discrete PDF}]
+        data = np.random.normal(1, 2, size=(1000))
+        print( np.mean(data), np.cov(data), np.std(data) )
+      \end{lstlisting}
+    \end{mdframed}
   \end{frame}
 % </Mean and Variance>
 
 % <Covariance and Correlation>
-  \begin{frame}{Covariance and Correlation}
+  \begin{frame}[fragile]{Covariance and Correlation}
     \begin{itemize}
       \item In cases with more than two variables the covariance between to random variables $(x, y)$ is defined equivalently as
         \begin{align*}
@@ -643,32 +666,46 @@
         \item When $\Cov[x,y] = 0$, $x,y$ are statistically independent leading to $f(x,y) = f(x)f(y)$. The reverse is not automatically given though
       \end{itemize}
     \end{itemize}
+    \begin{mdframed}
+      \begin{lstlisting}[style=dark, gobble=8, title=\lsttitlelight{Cumulative distribution function for discrete PDF}]
+        x = np.random.normal(0, 1, size=1000)
+        y = np.random.normal(x, x**2, size=1000)
+        print( np.cov(x, y), np.corrcoef(x, y) )
+      \end{lstlisting}
+    \end{mdframed}
   \end{frame}
 % </Covariance and Correlation>
 
 % <Bayes Rule>
-  \begin{frame}{Bayes Rule}
+  \begin{frame}{Bayes' Rule}
     \begin{itemize}
-      \item We can marginalize a multidimensional distribution by integrating (or summing) over all but one variable
+      \item With the two prerequisites $\dots$
+        \begin{enumerate}
+          \item A multidimensional distribution can be marginalized by integrating (or summing) over all but one variable: $f(x) = \int_\mathcal{Y}f(x,y)\,\deriv{y}$ or $P(x) = \sum_{y_i\in\mathcal{Y}} P(x_i, y_i)$
+          \item The following intuitive properties can be visualized and understood using Venn diagrams
+            \begin{equation*}
+              P(A\,\text{or}\,B) = P(A) + P(B) - P(A\,\text{and}\,B)
+              \minter{and}
+              P(A\,\text{and}\,B) = P(A) P(B|A) = P(B) P(A|B)
+            \end{equation*}
+        \end{enumerate}
+      \item $\dots$ the Bayes' rule follows
         \begin{equation*}
-          f(x) = \int_\mathcal{Y}f(x,y)\deriv{y}
-          \quad\text{or}\quad
-          P(x) = \sum_{y_i\in\mathcal{Y}} P(x_i, y_i)
+          P(A|B) = \frac{P(B|A) P(A)}{P(B)}
+          \minter{, or more general for disjunct $A_i$:}
+          P(A_i|B) = \frac{P(B|A_i) P(A_i)}{\sum_{i=1}^N P(B|A_i)P(A_i)}
         \end{equation*}
-        \item The following intuitive properties can be visualized and understood using Venn diagrams
-          \begin{align*}
-            P(A\,\text{or}\,B) &= P(A) + P(B) - P(A\,\text{and}\,B) \\
-            P(A\,\text{and}\,B) &= P(A) P(B|A) = P(B) P(A|B)
-          \end{align*}
-        \item From these the Bayes rule follows
-          \begin{equation*}
-            P(A|B) = \frac{P(B|A) P(A)}{P(B)}
-          \end{equation*}
-          or in the more general case with multiple disjunct events $A_i$ using marginalization of $P(B)$
-          \begin{equation*}
-            P(A_i|B) = \frac{P(B|A_i) P(A_i)}{\sum_{i=1}^N P(B|A_i)P(A_i)}
-          \end{equation*}
+        \begin{itemize}
+          \item $P(B|A)$ is the \enquote{Likelihood} (data), $P(A)$ the \enquote{Prior} (believe), $P(B)$ the \enquote{marginalization} (normalization)
+          \item $P(A|B)$ is the \enquote{Posterior}, the probability of $B$ being true, given $A$ is true (prior information)
+        \end{itemize}
     \end{itemize}
+    \vfill
+    \begin{exampleblock}{Example: Drug test reliability}
+      A drug test is $97\%$ positive if truly positive, $95\%$ negative if truly negative (Likelihood). \\
+      Also known (Prior): $0.5\%$ of the population is known to use the drug. What is the probability that a random person with a positive test is really using the drug? \\
+      Answer: Only $8.9\%$ chance that a positively tested person is really using the drug (Posterior).
+    \end{exampleblock}
   \end{frame}
 % </Bayes Rule>
 
@@ -699,13 +736,41 @@
       It is a special case of the binomial distribution for small $p$ and many trials $n$
     \end{itemize}
   \end{frame}
+
+  \begin{frame}{Distributions -- Examples}
+    \includegraphics[width=\textwidth]{01-img-distributions_examples.png}
+  \end{frame}
 % </Important Distributions>
 
 % <Exercises>
   \begin{frame}{Exercises}
     \begin{exampleblock}{Exercise}
       \begin{enumerate}
-        \item 1
+        \item Compute the mariginal distributions $p(x), p(y)$ and the conditional distributions $p(x|Y=y_1), p(y|X=x_3)$ for the bivariate discrete distribution
+        \begin{center}
+          \begin{tabular}{r|ccccc}
+             & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ \\ \hline
+            $y_1$ & $0.01$ & $0.02$ & $0.03$ & $0.1$ & $0.1$ \\
+            $y_2$ & $0.05$ & $0.1$ & $0.05$ & $0.07$ & $0.2$ \\
+            $y_3$ & $0.1$ & $0.05$ & $0.03$ & $0.05$ & $0.04$ \\
+          \end{tabular}
+        \end{center}
+        \item You have collected the following data about spam emails:
+        \begin{center}
+          \begin{tabular}{ll|ll}
+            Type & Contains & Type & Contains \\ \hline
+            spam & \enquote{send us your password} &
+              spam & \enquote{review us} \\
+            no-spam & \enquote{send us your review} &
+              spam & \enquote{send password} \\
+            no-spam & \enquote{password review} &
+              spam & \enquote{send us your account} \\
+          \end{tabular}
+        \end{center}
+          What is the posterior probability that a new email containing the word \enquote{review} is a spam mail?
+          You may also write a little code to make the example bigger or play with the parameters.
+        \item Now try to compute the probability of \enquote{review us now} by constructing likelihoods for every occurring word.
+        % http://www.est.uc3m.es/BayesUC3M/Summer_School_UPM/2017/lecture%20notes/Practical1.pdf page 5ff.
       \end{enumerate}
     \end{exampleblock}
   \end{frame}
