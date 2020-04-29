@@ -1,0 +1,4 @@
+# Set background to slide background fom beamercolorthememetropolis.sty
+axes.facecolor : FAFAFA
+figure.facecolor : FAFAFA
+savefig.facecolor : FAFAFA
