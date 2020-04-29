@@ -11,6 +11,9 @@ export TEXINPUTS=./:./$(TEXDIR):
 # Manually specify asset targets, target must be named as script, one target per script
 ASSET_TARGETS := $(BUILD_DIR)/$(ASSET_DIR)/01-img-gradient_descent.png
 ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-gradient_descent_momentum.png
+ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-convolution_analytic.png
+ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-convolution_discrete.png
+ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-derivatives.png
 
 
 # Include files should also trigger a rebuild if changed
