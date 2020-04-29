@@ -14,6 +14,8 @@ ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-gradient_descent_momentum.png
 ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-convolution_analytic.png
 ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-convolution_discrete.png
 ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-derivatives.png
+ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-distributions.png
+ASSET_TARGETS += $(BUILD_DIR)/$(ASSET_DIR)/01-img-distributions_examples.png
 
 
 # Include files should also trigger a rebuild if changed
