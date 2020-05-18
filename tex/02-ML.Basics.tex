@@ -71,8 +71,10 @@
           \item However, in classification problems, data usually comes in discrete categories, also called classes
           \item These (binary) classes can be encoded with $Y\in {0, 1}$ (eg. sun will shine: $y=1$, sun won't shine: $y=0$), also called \enquote{one-hot-encoding}
           \item We can't simply fit a line to those data point, because the model would be meaningless
-          \item The way around: Logistic Regression, which is, actually, a classification algorithm but uses regression to arrive there
+          \item \textbf{The way around: Logistic Regression}, which is, actually, a classification algorithm but uses regression to arrive there
           \item We use our Likelihood framework again, but we need to adapt our model to take the discrete classes into account
+          % \item \emph{Note:} Regression and classification task are more or less the same, only with a difference in the choice of model.
+          % Both operate within the Likelihood framework
         \end{itemize}
       \end{column}
       \begin{column}{0.35\textwidth}
@@ -223,6 +225,31 @@
       \end{center}
   \end{frame}
 
+  \begin{frame}{Reinforcement learning}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+          \item There is a third class of machine learning type, called \emph{reinforcement learning}
+          \begin{itemize}
+            \item Actually the borders are not always very clear and techniques and algorithms can end up blending concepts from multiple areas, and areas like \emph{semi-supervised learning} emerge
+          \end{itemize}
+          \item In reinforcement learning, the algorithm (\enquote{agent}) is presented with a reward of its actions in a given \enquote{environment} (simulation, real world task, etc.)
+          \item The learner tries to tune the agent parameters so it gets a higher and higher reward when acting in the environment
+          \item This field is often researched in the video game or simulation realm because new experiments can be done fast
+          \begin{itemize}
+            \item Eg. \url{https://deepmind.com/blog}
+          \end{itemize}
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \includegraphics[width=\textwidth]{02-img-reinforcement}
+        \begin{center}
+          \tiny[\url{https://www.linkedin.com/pulse/machine-learning-explained-understanding-supervised-ronald-van-loon}]
+        \end{center}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Basics
@@ -233,13 +260,32 @@
       \begin{itemize}
         \item A key challenge in machine learning applications is that the focus lies more on a broad validity of the model rather than trying to get the maximum information from the training set
         \item This means the trained model should also behave well on previously unseen data, not used in training
+        % \item Compare: In statistic we're usually more interested in constraining some set of true parameters with the available data and model as good as possible
+        \item To be able to check the performance on unseen data, a piece of the whole available data is split of and not used for training but later for checking the trained model
+        \item We then have two factors that determine how well our model performs
       \end{itemize}
+      \begin{description}
+        \item[Underfitting] is usually meant when the model does not yield a low enough loss on training data
+        \begin{itemize}
+          \item This usually happens, when the model is not complex or flexible enough to capture the shape of the data distribution
+        \end{itemize}
+        \item[Overfitting] means we have a really good performance on training data, but on unseen data, the performance is much worse
+          \begin{itemize}
+            \item We get overfitting, when we use a too complex model which adapts perfectly to training data, but then misses all the training data points
+          \end{itemize}
+      \end{description}
     \end{frame}
 
-    \begin{frame}{Validation}
+    \begin{frame}{Over- and underfitting example}
+      \includegraphics[width=\textwidth]{02-img-over_underfit}
+      \enlargethispage{3em}
+      % \vspace{-1em}
+      \emph{\footnotesize Note: For regression, line fit, polygon of 2nd and 11th order; for classification, logistic regression, plain neural net, over-fitter plain neural net without regularization and too large layers}
+    \end{frame}
+
+    \begin{frame}{Variance Bias tradeoff}
       \begin{itemize}
-        \item Validation in general
-        \item Cross validation
+        \item Tree pruning as example
       \end{itemize}
     \end{frame}
 
@@ -251,16 +297,17 @@
       \end{itemize}
     \end{frame}
 
+    \begin{frame}{Validation}
+      \begin{itemize}
+        \item Validation in general
+        \item Cross validation
+      \end{itemize}
+    \end{frame}
+
     \begin{frame}{Hyperparamter search / tuning}
       \begin{itemize}
         \item Grid search
         \item Random search
-      \end{itemize}
-    \end{frame}
-
-    \begin{frame}{Variance Bias tradeoff}
-      \begin{itemize}
-        \item Tree pruning as example
       \end{itemize}
     \end{frame}
 
