@@ -10,6 +10,9 @@
 \usepackage{xcolor}
 \usepackage{csquotes}
 \usepackage{url}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
 \usepackage{graphicx}
   \graphicspath{{build/assets/}, {assets/}}
 
@@ -29,6 +32,10 @@
 \newcommand{\lsttitledark}[1]{\textit{\texttt{\scriptsize#1}}}
 \newcommand{\lsttitlelight}[1]{\color{col_fg}\textit{\texttt{\scriptsize#1}}}
 % </Setup dark code environment>
+
+% Rotated text inside multicolumn in table
+% From: https://tex.stackexchange.com/questions/89115
+\newcommand{\STAB}[1]{\begin{tabular}{@{}c@{}}#1\end{tabular}}
 
 % Customize the theme colors a bit to use nord but same shaed as original theme
 \setbeamercolor{frametitle}{fg=nordBrightLightest,bg=nordDarkBase}

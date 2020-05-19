@@ -163,25 +163,6 @@
     \end{description}
   \end{frame}
 
-  \begin{frame}{Performance measure}
-    \begin{columns}
-      \begin{column}{0.65\textwidth}
-        \begin{itemize}
-          \item In machine learning algorithms, the definition of the loss function is the key task to define the behaviour and the capabilities of the learned system
-          \item Defining the loss can get quite complicated to find the desired result
-          \item For classification tasks, usually a simple \emph{accuracy} measure is used, which is just the proportion of correctly classified samples and usually encoded using the \emph{cross-entropy loss}
-          \item For regression tasks, the mean squared error is often used to measure the deviation of the model output to the data point for each sample.
-            Many variants exists, for example for regularization (Huber loss)
-          \item For example in a style transfer generative model, the loss is a combination from a \emph{style loss} and \emph{content loss} to produce the desired output.
-        \end{itemize}
-      \end{column}
-      \begin{column}{0.35\textwidth}
-        \vspace*{1em}
-        \includegraphics[width=\textwidth]{02-img-loss_functions}
-      \end{column}
-    \end{columns}
-  \end{frame}
-
   \begin{frame}{Supervised / unsupervised learners}
     \begin{columns}[t]
       \begin{column}{0.65\textwidth}
@@ -199,7 +180,7 @@
               % Cross validation can be used to estimate hyper-parameters like the number of clusters to find
             \item Neural network autoencoders try to find a compressed version of the input by piping the data through a bottleneck and then reconstructing them from that reduced input.
               % They can thus compare the input to their own generated output
-            \item \emph{Expectation-maximization} is an iterative Likelihood method and is used in Gaussian mixture models
+            \item \emph{Expectation-maximization} is an iterative Likelihood method and eg. used in Gaussian mixture models
           \end{itemize}
           % \item Here focus mostly on an overview of supervised learners
         \end{itemize}
@@ -237,7 +218,7 @@
           \item The learner tries to tune the agent parameters so it gets a higher and higher reward when acting in the environment
           \item This field is often researched in the video game or simulation realm because new experiments can be done fast
           \begin{itemize}
-            \item Eg. \url{https://deepmind.com/blog}
+            \item \url{https://deepmind.com/blog}
           \end{itemize}
         \end{itemize}
       \end{column}
@@ -256,6 +237,125 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \section{Basics}
 
+    \begin{frame}{Performance measures}
+      \begin{columns}
+        \begin{column}{0.65\textwidth}
+          \begin{itemize}
+            \item In machine learning algorithms, the definition of the loss function is the key task to define the behaviour and the capabilities of the learned system
+            \item Defining the loss can get quite complicated to find the desired result
+            \item For classification tasks, usually a simple \emph{accuracy} measure is used, which is just the proportion of correctly classified samples and usually encoded using the \emph{cross-entropy loss}
+            \item For regression tasks, the mean squared error is often used to measure the deviation of the model output to the data point for each sample.
+              Many variants exists, for example for regularization (Huber loss)
+            \item For example in a style transfer generative model, the loss is a combination from a \emph{style loss} and \emph{content loss} to produce the desired output.
+          \end{itemize}
+        \end{column}
+        \begin{column}{0.35\textwidth}
+          \vspace*{1em}
+          \includegraphics[width=\textwidth]{02-img-loss_functions}
+        \end{column}
+      \end{columns}
+    \end{frame}
+
+    \begin{frame}{Other classifier performance metrics}
+      \enlargethispage{1cm}
+      \begin{columns}
+        \begin{column}{0.65\textwidth}
+          \begin{itemize}
+            % \item For classifiers, there are other performance measures besides the value of the loss as in the regression case
+            \item We can define \enquote{true positives / negatives} (TP / NP) and \enquote{false positives and negatives} (FP / NP) and show them in a truth table (\emph{confusion matrix})
+            \item From these we can define some performance metrics, like
+            \begin{itemize}
+              \item Sensitivity: $\text{TP} / (\text{TP} + \text{FN})$
+              \item Precision: $\text{TP} / (\text{TP} + \text{FP})$
+              \item Fall-out: $\text{FP} / (\text{FP} + \text{TN})$
+              \item Accuracy: $(\text{TP} + \text{TN}) / N_\text{data}$
+              \item Note: When classes are imbalanced, these are pretty misleading (eg. $99\%$ of examples are class 0, then it's trivial to achieve $99\%$ accuracy)
+            \end{itemize}
+            \item Often, the area under \emph{ROC curves} is also used
+            \begin{itemize}
+              \item After classification, move decision boundary from $0$ to $1$ and plot fall-out against sensitivity
+              \item This gives a curve from $(0,0)$ to $(1, 1)$
+              \item We want that curve to have a high sensitivity even for low fall-outs, so the area should be close to one (curve should bend towards top left corner)
+              \item A guessing classifier is represented by the diagonal line
+            \end{itemize}
+          \end{itemize}
+        \end{column}
+        \begin{column}{0.35\textwidth}
+          \centering
+          \begin{tabular}{cccc}
+            & & \multicolumn{2}{c}{\small True} \\
+            & & 0 & 1 \\
+           \multirow{2}{*}{\STAB{\rotatebox[origin=c]{90}{
+            \small Predicted
+            }}}
+            & 0 & \cellcolor{nordAuroraGreen} TP & \cellcolor{nordAuroraRed} FP \\
+            & 1 & \cellcolor{nordAuroraRed} FN & \cellcolor{nordAuroraGreen} TN \\
+          \end{tabular}
+
+          \vspace{1cm}
+          \includegraphics[width=\textwidth]{02-img-roc_curve}
+        \end{column}
+      \end{columns}
+    \end{frame}
+
+    \begin{frame}{Loss functions - Regression}
+      \enlargethispage{1cm}
+      There are few frequently used loss functions for standard regression and classification task
+      \begin{description}
+        \item[Mean squared error (MSE)] is the standard regression loss function
+          \begin{equation*}
+            \frac{1}{N} \sum_{i=1}^N \left(y_i - \hat{y}_i\right)^2
+            \minter{or weighted}
+            \frac{1}{N} \sum_{i=1}^N w_i\left(y_i - \hat{y}_i\right)^2
+            \minter{where usually}
+            w_i = \frac{1}{\sigma_i^2}
+          \end{equation*}
+          \begin{itemize}
+            \item Penalizes large deviation from the true values quadratically
+            \item Has troubles with outlier points as they tend to draw all the attention to themselves
+          \end{itemize}
+        \item[Mean absolute error (MAE)] is the standard regression loss function
+          \begin{equation*}
+            \frac{1}{N} \sum_{i=1}^N \left|y_i - \hat{y}_i\right|
+          \end{equation*}
+          \begin{itemize}
+            \item Large deviations from the true values are only penalized linearly, more robust to outliers
+            \item The \emph{Huber loss} combines MSE and MAE by switching continuously at some $\delta$
+          \end{itemize}
+      \end{description}
+      Note: This list is not complete, see \url{https://keras.io/api/losses/} for a nice overview
+    \end{frame}
+
+    \begin{frame}{Regression loss functions example}
+        \includegraphics[width=\textwidth]{02-img-regression_losses}
+    \end{frame}
+
+    \begin{frame}{Loss functions - Classification}
+      \enlargethispage{1cm}
+      There are few frequently used loss functions for standard regression and classification task
+      \begin{description}
+        \item[Binary Cross Entropy (BCE)] is the standard classification loss function for two classes
+          \begin{equation*}
+            - \frac{1}{N} \sum_{i=1}^N \left(
+              y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
+          \end{equation*}
+          \begin{itemize}
+            \item $y_i$ are the true, \emph{one-hot-encoded} labels, so for a point belonging to the first class, $y_i = 1$, so only the first log term survives
+            \item Has troubles with outlier points as they tend to draw all the attention to themselves
+          \end{itemize}
+        \item[Categorial Cross Entropy] is the same thing as the BCE above, but for more than two classes.
+        It generalises for $C$ classes as
+          \begin{equation*}
+            - \frac{1}{N}\sum_{i=1}^N \sum_{j=1}^C y_{ij} \log(\hat{y}_{ij})
+          \end{equation*}
+          \begin{itemize}
+            \item For two classes we retrieve the BCE estimator
+            \item This is also used one-hot-encoded, eg. for $4$ classes, the truth vector for a class $3$ example would be $\vec{y}_i = [0, 0, 1, 0]$
+          \end{itemize}
+      \end{description}
+      Note: This list is not complete, see \url{https://keras.io/api/losses/} for a nice overview or \url{https://gombru.github.io/2018/05/23/cross_entropy_loss/} for a more in-depth explanation
+    \end{frame}
+
     \begin{frame}{Overfitting / underfitting}
       \begin{itemize}
         \item A key challenge in machine learning applications is that the focus lies more on a broad validity of the model rather than trying to get the maximum information from the training set
@@ -268,10 +368,12 @@
         \item[Underfitting] is usually meant when the model does not yield a low enough loss on training data
         \begin{itemize}
           \item This usually happens, when the model is not complex or flexible enough to capture the shape of the data distribution
+          \item We say the model has a high \emph{bias} (bias regarding the   inflexibility of the model)
         \end{itemize}
         \item[Overfitting] means we have a really good performance on training data, but on unseen data, the performance is much worse
           \begin{itemize}
             \item We get overfitting, when we use a too complex model which adapts perfectly to training data, but then misses all the training data points
+          \item We say the model has a high \emph{variance} (performance highly fluctuates on unseen data)
           \end{itemize}
       \end{description}
     \end{frame}
@@ -283,17 +385,30 @@
       \emph{\footnotesize Note: For regression, line fit, polygon of 2nd and 11th order; for classification, logistic regression, plain neural net, over-fitter plain neural net without regularization and too large layers}
     \end{frame}
 
-    \begin{frame}{Variance Bias trade-off}
-      \begin{itemize}
-        \item Tree pruning as example
-      \end{itemize}
-    \end{frame}
-
     \begin{frame}{Regularization}
       \begin{itemize}
-        \item Under-constrained LinEqSys
-        \item L2 Regularization example
-        \item Examples in other contexts
+        \item Consider solving a system of linear equations, if there are more variables than equation, then there is no solution to the problem
+        \begin{itemize}
+          \item But if we introduce artificial constraints on the parameters, we can find a solution
+          \item The cost for introducing the constraints is an additional bias in the model
+        \end{itemize}
+        \item For a general loss function, the regularization term is simply added to the loss
+          \begin{equation*}
+            \frac{1}{N}\sum_{i=1}^N \mathrm{loss}_i \rightarrow
+            \frac{1}{N}\sum_{i=1}^N \mathrm{loss}_i(\theta)
+              + \lambda \sum_j\mathrm{reg}(\theta_j)
+          \end{equation*}
+          wehre $\theta$ is the regularization strength as a tunable parameter (if $0$, then we won't have regularization)
+        \item Popular losses are
+        \begin{itemize}
+          \item L2 (\emph{ridge} or \emph{TTikhonov}) regularization: $\mathrm{reg} = \sum_j \theta_j^2$; yields parameters that are as small as possible
+          \item L1 (\emph{lasso}) regularization: $\mathrm{reg} = \sum_j\left|\theta_j\right|$; yields a sparse parameter set
+        \end{itemize}
+        \item There are also other \enquote{effective} regularization techniques:  %, that try to minimize variance by averaging over randomized ensembles of models
+        \begin{description}
+          \item[Dropout] is often used in neural networks; in each training step, certain parts of the network are \enquote{turned off} simulating an average of multiple models
+          \item[Bagging] is similar to dropout and often used for tree based learners; instead of turning of certain parameters, many models are trained with only a randomly sampled fraction of the data and then averaged
+        \end{description}
       \end{itemize}
     \end{frame}
 
