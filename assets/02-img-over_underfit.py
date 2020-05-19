@@ -1,19 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+"""
+Trying to reproduce something similar to
+  https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-machine-learning-tips-and-tricks#classification-metrics
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 
 plt.rcParams["lines.linewidth"] = 3
-
 rng = np.random.RandomState(1337)
-# Trying to reproduce something similar to
-#   https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-machine-learning-tips-and-tricks#classification-metrics
-
-
 # Make 1D regression and 2D classification data.
+
 
 # Regression truth: Quadratic
 def reg_truth(x):
@@ -50,7 +51,7 @@ data = np.vstack([xc, yc]).T
 logreg = LogisticRegression(random_state=rng)
 logreg.fit(data, classes)
 
-# Fake a "just right" using the true boundary
+# Use a small regularized net for "just right"
 net_right = MLPClassifier(hidden_layer_sizes=(5, 10, 5), alpha=1,
                           random_state=rng, max_iter=500, solver="adam")
 net_right.fit(data, classes)
@@ -68,16 +69,16 @@ xx, yy = map(np.ravel, [XX, YY])
 grid_points = np.vstack([xx, yy]).T
 
 # Logistic regression
-preds_logreg = logreg.predict(grid_points)
-preds_logreg_classes = np.round(preds_logreg)
+preds_logreg = logreg.predict_proba(grid_points)[:, 1]
+preds_logreg_classes = logreg.predict(grid_points)
 
 # Just right
-preds_net_right = net_right.predict(grid_points)
-preds_net_right_classes = np.round(preds_net_right)
+preds_net_right = net_right.predict_proba(grid_points)[:, 1]
+preds_net_right_classes = net_right.predict(grid_points)
 
 # Network overfit
-preds_net_over = net_over.predict(grid_points)
-preds_net_over_classes = np.round(preds_net_over)
+preds_net_over = net_over.predict_proba(grid_points)[:, 1]
+preds_net_over_classes = net_over.predict(grid_points)
 
 
 _x = np.linspace(xmin, xmax, 200)
