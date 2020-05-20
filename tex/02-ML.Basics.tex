@@ -283,13 +283,14 @@
         \begin{column}{0.35\textwidth}
           \centering
           \begin{tabular}{cccc}
-            & & \multicolumn{2}{c}{\small True} \\
-            & & 0 & 1 \\
+            & & \multicolumn{2}{c}{\small\textit{Predicted}} \\
+            & & True & False \\
            \multirow{2}{*}{\STAB{\rotatebox[origin=c]{90}{
-            \small Predicted
-            }}}
-            & 0 & \cellcolor{nordAuroraGreen} TP & \cellcolor{nordAuroraRed} FP \\
-            & 1 & \cellcolor{nordAuroraRed} FN & \cellcolor{nordAuroraGreen} TN \\
+            \small\textit{Truth} }}}
+            & True & \cellcolor{nordAuroraGreen}\textcolor{white}{TP} &
+              \cellcolor{nordAuroraRed}\textcolor{white}{FN} \\
+            & False & \cellcolor{nordAuroraRed}\textcolor{white}{FP} &
+              \cellcolor{nordAuroraGreen}\textcolor{white}{TN} \\
           \end{tabular}
 
           \vspace{1cm}
@@ -399,10 +400,10 @@
               + \lambda \sum_j\mathrm{reg}(\theta_j)
           \end{equation*}
           wehre $\theta$ is the regularization strength as a tunable parameter (if $0$, then we won't have regularization)
-        \item Popular losses are
+        \item Popular regularization terms are
         \begin{itemize}
-          \item L2 (\emph{ridge} or \emph{TTikhonov}) regularization: $\mathrm{reg} = \sum_j \theta_j^2$; yields parameters that are as small as possible
-          \item L1 (\emph{lasso}) regularization: $\mathrm{reg} = \sum_j\left|\theta_j\right|$; yields a sparse parameter set
+          \item \textbf{L2 (\emph{ridge} or \emph{Tikhonov})} regularization: $\mathrm{reg} = \sum_j \theta_j^2$; yields parameters that are as small as possible
+          \item \textbf{L1 (\emph{lasso})} regularization: $\mathrm{reg} = \sum_j\left|\theta_j\right|$; yields a sparse parameter set
         \end{itemize}
         \item There are also other \enquote{effective} regularization techniques:  %, that try to minimize variance by averaging over randomized ensembles of models
         \begin{description}
@@ -439,27 +440,39 @@
       \end{columns}
     \end{frame}
 
-    % \begin{frame}{Hyperparamter search / tuning}
-    %   \begin{itemize}
-    %     \item Grid search
-    %     \item Random search
-    %   \end{itemize}
-    % \end{frame}
+    \begin{frame}{Hyperparamter search / tuning}
+      \enlargethispage{1cm}
+      \begin{columns}
+        \begin{column}{0.75\textwidth}
+          \begin{itemize}
+            \item \emph{Hyperparameters} are tunable values, that are not related to the weights of the learner but rather to the algorithm itself
+            \begin{itemize}
+              \item Eg. number of trees in a random forest, number of clusters, learning rates, regularization strengths, $\dots$
+            \end{itemize}
+            \item To find an optimal set of these, we usually simply have to try them out
+            \item Systematic approaches sample parameters on some kind of grid and compare the performances to select the best one
+            \begin{description}
+              \item[Grid search] is the classic approach of trying parameters on a rectangular grid; Drawbacks are, that the underlying distributions are only sparsely samples
+              \item[Random search] distributes the parameter combinations randomly; The underlying distributions are better sampled then
+            \end{description}
+            \item Additionally, meta minimizers, evolutionary algorithms or other sophisticated methods can be used, to descent to a minimum parameter set more quickly and robustly
+          \end{itemize}
+        \end{column}
+        \begin{column}{0.25\textwidth}
+          \includegraphics[width=\textwidth]{02-img-hyperparameter_search}
+        \end{column}
+      \end{columns}
+      \footnotesize Usually we let some packages do the work for us, eg. \url{http://hyperopt.github.io/hyperopt/} or \url{https://scikit-learn.org/stable/modules/grid_search.html}
+    \end{frame}
 
     % \begin{frame}{Feature extraction / generation}
     %   \begin{itemize}
     %     \item PCA -> Also shortly mention as a unsupervised learner
     %     \item Generative algorithms
-    %   \end{itemize}
-    % \end{frame}
-
-    % \begin{frame}{Feature selection}
-    %   \begin{itemize}
     %     \item MRMR
     %     \item Forward / backward selection
     %   \end{itemize}
     % \end{frame}
-
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Example ALgoithms
@@ -483,43 +496,173 @@
 
   \subsection{Supervised}
 
-  \begin{frame}{Curve Fitting - Least Squares}
+  \begin{frame}[fragile]{Manual Likelihood fit}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item We already saw examples of Likelihood fitting
+          \item Usually this technique is used more often in statistics when there is need for a robust error estimation of the estimated parameters
+          \item How to:
+          \begin{enumerate}
+            \item Define your Likelihood model suitable for your data
+            \item Minimize the negative log-Likelihood (numerically) and yield the best parameter set
+          \end{enumerate}
+        \end{itemize}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{Gaussian LLH fit [Note: example shortened]}]
+            # Note: x is the data array, previously defined
+            def neglogllh(params):
+                mean, stddev = params
+                return -np.sum(scipy.stars.norm.logpdf(
+                    x, loc=mean, scale=stddev))
+
+            theta0 = [0, 1]  # Seed: Standard normal distribution
+            best_fit = scipy.optimize.minimize(neglogllh, theta0)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_llh}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}[fragile]{k Nearest Neighbours (kNN) classifier}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item \emph{kNN} is a supervised classification algorithm
+          \item It does not have a \enquote{real} training step, it simply stores all training data
+          \item On prediction, the new point is compared to all neighbours and the majority vote of the $k$ nearest neighbour points wins
+          \item The distance metric can be adopted to the needs, eg. euclidean or taxi or cosine distance, etc.
+          \item \small\url{https://scikit-learn.org/stable/modules/neighbors.html#classification}
+        \end{itemize}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{kNN classification [Note: example shortened]}]
+            from sklearn.neighbors import KNeighborsClassifier
+            knn = KNeighborsClassifier(n_neighbors=3)
+            knn.fit(data_train, classes)
+            preds = knn.predict_proba(data_test)[:, 1]
+            preds_classes = knn.predict(data_test)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_knn}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}[fragile]{LDA Classification}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item \emph{LDA} (linear discriminant analysis) is a supervised, linear classification algorithm
+          \item It tries to find the separating hyperplane in $N_\text{feat} - 1$ dimension that maximizes the distance between the class means and minimizes the projected variances per class
+          \item In 1D the separator is a straight line
+          \item The loss is
+            $(\vec{\mu}'_1 - \vec{\mu}'_2)^2(\Sigma'_1 + \Sigma'_2)^{-1}$
+            where $\vec{\mu}'_i$ is the projected mean and $\Sigma'_i$ the proj. covariance of class $i$
+          \item \small\url{https://scikit-learn.org/stable/modules/lda_qda.html#lda-qda}
+        \end{itemize}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{LDA classification [Note: example shortened]}]
+            from sklearn.discriminant_analysis import \
+                LinearDiscriminantAnalysis
+            lda = LinearDiscriminantAnalysis()
+            lda.fit(data_train, classes)
+            preds = lda.predict_proba(data_test)[:, 1]
+            preds_classes = lda.predict(data_test)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_lda}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}[fragile]{Support vector machine classifier}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          % \item \emph{SVM} (support vector machine) is a supervised, classification algorithm
+          \item \emph{SVM} works similar to the LDA by trying to find a separating hyper plane, but here, the algorithm tries place the plane so that a margin region between the classes becomes as large as possible
+          % \item However, the loss is defined a bit different (\emph{Hinge loss}) which yields a \enquote{maximum margin classification}
+          \item SVM can be made very flexible by using transformation functions (search for \enquote{kernel trick}) to transform the data on-the-fly to a higher dimensional space, where a linear separator can be found
+          \item \small\url{https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html}
+        \end{itemize}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{LDA classification [Note: example shortened]}]
+            from sklearn.svm import SVC
+            svm = SVC(kernel="rbf")  # Use a non-lin kernel
+            # svm = SVC(kernel="linear")  # Or a linear kernel
+            svm.fit(data_train, classes)
+            preds_classes = svm.predict(data_test)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_svm}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}[fragile]{Naive Bayes classifier}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          % \item \emph{SVM} (support vector machine) is a supervised, classification algorithm
+          \item The \emph{Naive Bayes} classifier uses the Bayes theorem $P(A|B) = P(B|A)P(A)/P(B)$ in combination to an assumption of the underlying class distribution to make predictions
+          \item The needed numerical values for the Likelihood, Prior and normalization are constructed from counting the combinations for categorical data or using eg. a Gaussian LLH for real valued features
+          \item \small\url{https://scikit-learn.org/stable/modules/classes.html#module-sklearn.naive_bayes}.
+          You need to select the proper one for your assumption on the data distribution.
+          \item Note: The sklearn GaussianNB does not consider covariance, so the lower example on the right is failing...
+        \end{itemize}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{LDA classification [Note: example shortened]}]
+            from sklearn.naive_bayes import GaussianNB
+            naiveb = GaussianNB()  # Also used in the plots
+            naiveb.fit(data_train, classes)
+            preds_classes = naiveb.predict(data_test)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_naive_bayes}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}{Decision Tree - Classification}
+  Classification
   Regression
   \end{frame}
 
-  \begin{frame}{KNN Classification}
-  Classification
-  \end{frame}
-
-  \begin{frame}{LDA Classification}
-  Classification
-  \end{frame}
-
-  \begin{frame}{Support Vector Machine}
+  \begin{frame}{Decision Tree - Regression}
   Classification
   Regression
   \end{frame}
 
-  \begin{frame}{Naive Bayes Classifier}
-  Classification
-  \end{frame}
-
-  \begin{frame}{Tree Based Learners}
-  Classification
-  Regression
+  \begin{frame}{Clustering}
+  k-Means
+  Mention DBSCAN
   \end{frame}
 
   \begin{frame}{Neural Networks}
   Classification
   Regression
   Only briefly
-  \end{frame}
-
-  \subsection{Unsupervised}
-
-  \begin{frame}{Clustering}
-  k-Means
-  Mention DBSCAN
   \end{frame}
 
   \begin{frame}{Generative Neural Network Models}
