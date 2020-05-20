@@ -413,52 +413,53 @@
     \end{frame}
 
     \begin{frame}{Validation}
-      \begin{itemize}
-        \item Validation in general
-        \item Cross validation
-      \end{itemize}
+      \begin{columns}
+        \begin{column}{0.7\textwidth}
+          \begin{itemize}
+            \item To properly validate a trained model, we need to know how well it generalizes on unseen data
+            \item \textbf{Note: Using all available data for training and quoting the training performance is a very bad idea}
+            \item ALWAYS split your data in a training and evaluation / test set
+            \item The most convenient way to evaluate the model performance is \emph{cross validation}
+            \begin{itemize}
+              \item Instead of splitting into only one training and test set, we split into $k$ equally sized but randomly sampled subset (k-fold cross validation)
+              \item Somehow $k=10$ is often used, if only a single element is used for testing, it is called \emph{leave-one-out validation}
+              \item So we split our data in $k$ subsets and train $k$ models on each training set, where a training set consists of $k-1$ subsets, successively leaving out every test set over all trainings
+              \item Then we test the model on the left out test sample in each iteration
+              \item In the end we can average the performance of each $k$th iteration and get a proper idea how well the model behaves on average on unseen data and how robust it is under a changing training set
+            \end{itemize}
+          \end{itemize}
+        \end{column}
+        \begin{column}{0.3\textwidth}
+          \includegraphics[width=\textwidth]{02-img-cross_validation_data_split}
+
+          \vspace{1cm}
+
+          \includegraphics[width=\textwidth]{02-img-cv_roc_curve}
+        \end{column}
+      \end{columns}
     \end{frame}
 
-    \begin{frame}{Hyperparamter search / tuning}
-      \begin{itemize}
-        \item Grid search
-        \item Random search
-      \end{itemize}
-    \end{frame}
+    % \begin{frame}{Hyperparamter search / tuning}
+    %   \begin{itemize}
+    %     \item Grid search
+    %     \item Random search
+    %   \end{itemize}
+    % \end{frame}
 
-    \begin{frame}{Feature extraction / generation}
-      \begin{itemize}
-        \item PCA -> Also shortly mention as a unsupervised learner
-        \item Generative algorithms
-      \end{itemize}
-    \end{frame}
+    % \begin{frame}{Feature extraction / generation}
+    %   \begin{itemize}
+    %     \item PCA -> Also shortly mention as a unsupervised learner
+    %     \item Generative algorithms
+    %   \end{itemize}
+    % \end{frame}
 
-    \begin{frame}{Feature selection}
-      \begin{itemize}
-        \item MRMR
-        \item Forward / backward selection
-      \end{itemize}
-    \end{frame}
+    % \begin{frame}{Feature selection}
+    %   \begin{itemize}
+    %     \item MRMR
+    %     \item Forward / backward selection
+    %   \end{itemize}
+    % \end{frame}
 
-  % \subsection{Regression}
-
-  % \begin{frame}{Intro}
-  %   \begin{itemize}
-  %     \item What is regression
-  %     \item Loss function
-  %     \item Example
-  %   \end{itemize}
-  % \end{frame}
-
-  % \subsection{Classification}
-
-  % \begin{frame}{Intro}
-  %   \begin{itemize}
-  %     \item What is classification
-  %     \item Loss function
-  %     \item Example
-  %   \end{itemize}
-  % \end{frame}
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Example ALgoithms
