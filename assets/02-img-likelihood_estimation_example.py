@@ -27,8 +27,8 @@ bf_mean, bf_stddev = res.x[0], res.x[1]
 x_plot = np.linspace(-3, 4, 100)
 y_plot = scs.norm.pdf(x_plot, loc=bf_mean, scale=bf_stddev)
 fig, ax = plt.subplots(1, 1, figsize=(9, 4.5))
-ax.set_title("Fitted mean: {:.2f}, stddev: {:.2f} ".format(bf_mean, bf_stddev) +
-             "(true mean: {:.0f}, stddev: {:.0f})".format(1, 1))
+ax.set_title("Fitted mean: {:.2f}, stddev: {:.2f} ".format(bf_mean, bf_stddev)
+             + "(true mean: {:.0f}, stddev: {:.0f})".format(1, 1))
 ax.vlines(x, 0, 0.1 * np.amax(y_plot), lw=2, ls="-", label="Data points")
 ax.plot(x_plot, scs.norm.pdf(x_plot, loc=1, scale=1),
         lw=3, c="C7", ls="--", label="True model")
