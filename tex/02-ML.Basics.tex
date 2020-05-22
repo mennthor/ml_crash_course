@@ -78,6 +78,8 @@
         \end{itemize}
       \end{column}
       \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
         \includegraphics[width=\textwidth]{02-img-logit}
       \end{column}
     \end{columns}
@@ -106,6 +108,8 @@
         \end{itemize}
       \end{column}
       \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
         \includegraphics[width=\textwidth]{02-img-logit}
       \end{column}
     \end{columns}
@@ -423,7 +427,7 @@
             \item The most convenient way to evaluate the model performance is \emph{cross validation}
             \begin{itemize}
               \item Instead of splitting into only one training and test set, we split into $k$ equally sized but randomly sampled subset (k-fold cross validation)
-              \item Somehow $k=10$ is often used, if only a single element is used for testing, it is called \emph{leave-one-out validation}
+              \item Somehow $k=10$ is often used; If only a single element is used for testing, it is called \emph{leave-one-out validation}
               \item So we split our data in $k$ subsets and train $k$ models on each training set, where a training set consists of $k-1$ subsets, successively leaving out every test set over all trainings
               \item Then we test the model on the left out test sample in each iteration
               \item In the end we can average the performance of each $k$th iteration and get a proper idea how well the model behaves on average on unseen data and how robust it is under a changing training set
@@ -459,6 +463,8 @@
           \end{itemize}
         \end{column}
         \begin{column}{0.25\textwidth}
+          \vspace*{1em}
+
           \includegraphics[width=\textwidth]{02-img-hyperparameter_search}
         \end{column}
       \end{columns}
@@ -599,7 +605,7 @@
           \item \small\url{https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html}
         \end{itemize}
         \begin{mdframed}
-          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{LDA classification [Note: example shortened]}]
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{SVM classification [Note: example shortened]}]
             from sklearn.svm import SVC
             svm = SVC(kernel="rbf")  # Use a non-lin kernel
             # svm = SVC(kernel="linear")  # Or a linear kernel
@@ -622,13 +628,14 @@
         \begin{itemize}
           % \item \emph{SVM} (support vector machine) is a supervised, classification algorithm
           \item The \emph{Naive Bayes} classifier uses the Bayes theorem $P(A|B) = P(B|A)P(A)/P(B)$ in combination to an assumption of the underlying class distribution to make predictions
-          \item The needed numerical values for the Likelihood, Prior and normalization are constructed from counting the combinations for categorical data or using eg. a Gaussian LLH for real valued features
+          \item The needed numerical values for $P(B|A),P(A),P(B)$ are constructed from counting the combinations for categorical data or using eg. a Gaussian LLH for real valued features
           \item \small\url{https://scikit-learn.org/stable/modules/classes.html#module-sklearn.naive_bayes}.
-          You need to select the proper one for your assumption on the data distribution.
-          \item Note: The sklearn GaussianNB does not consider covariance, so the lower example on the right is failing...
+            You need to select the proper one for your assumption on the data distribution.
+          \item Note: The \enquote{naive} means that we assume each feature is independent.
+            That's the reason why it can't perfectly separate the Gaussian with covariances in the lower right plot
         \end{itemize}
         \begin{mdframed}
-          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{LDA classification [Note: example shortened]}]
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{Naive Bayes classification [Note: example shortened]}]
             from sklearn.naive_bayes import GaussianNB
             naiveb = GaussianNB()  # Also used in the plots
             naiveb.fit(data_train, classes)
@@ -644,29 +651,99 @@
     \end{columns}
   \end{frame}
 
-  \begin{frame}{Decision Tree - Classification}
+  \begin{frame}[fragile]{Decision Tree - Classification}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item \emph{Tree} based classifiers, like a simple \emph{Decision Tree} or a more sophisticated \emph{Random Forest} build a series of straight cuts in a tree based order during training
+          \item Cut selection is based on \emph{entropy gain} (see logistic regression) or the \emph{Gini-Index}
+          \item We can see the straight cuts directly in the plots on the right: The decision boundary is put together from a series of axes-parallel lines
+          \item Note: Simple trees almost always require some kind of regularization, as they tend to overfit a lot
+          \item \small\url{https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html}
+        \end{itemize}
+        \vspace{-0.5em}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{Decision Tree classification [Note: example shortened]}]
+            from sklearn.tree import DecisionTreeClassifier
+            tree = DecisionTreeClassifier()
+            tree.fit(data_train, classes)
+            preds_classes = tree.predict(data_test)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_tree_classification}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}[fragile]{Decision Tree - Regression}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item \emph{Tree learners} can also be used as regressors, we simply have to exchange the split decision loss to a mean squared error or others we saw before
+          \item On each split, the cut is chosen, which minimizes the distance in the leaf to a straight line segment
+          \item Therefore, a tree based regressor also produces straight line segments as the regression and not a continuous curve
+          \item \small\url{https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html}
+        \end{itemize}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{Decision Tree regression [Note: example shortened]}]
+            from sklearn.tree import DecisionTreeRegressor
+            tree = DecisionTreeRegressor()
+            tree.fit(x_vals, y_vals)
+            preds_classes = tree.predict(x_test_vals)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_tree_regression}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}[fragile]{Clustering}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item \emph{k-Means} is an iterative, unsupervised clustering algorithm, that means it does not (need to) know about the true labels
+          \item The k-Means algorithm tries to minimize the distance from the $k$ class centres to each point belonging to that class $\sum_{i=1}^k \sum_{x_j\in C_i} (x_j - \mu_i)^2$
+          \item The number of clusters is a fixed hyper parameter
+          \item The iteration usually works as follows (iterate 2-3)
+          \begin{enumerate}
+            \item Init cluster centers (usually random)
+            \item Assign each point to the cluster which has the lowest increase in variance
+            \item Re-calculate the cluster centres by averaging the points
+          \end{enumerate}
+          \item \small\url{https://scikit-learn.org/stable/modules/clustering.html#k-means}
+        \end{itemize}
+        \vspace{-1em}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{Decision Tree regression [Note: example shortened]}]
+            from sklearn.cluster import KMeans
+            kmeans = kMeans(n_clusters=2)
+            kmeans.fit(data_train)  # No labels needed
+            preds_classes = kmeans.predict(data_test)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_kmeans}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}[fragile]{Simple Fully-Connected Neural Network Classifier}
   Classification
+  \end{frame}
+
+  \begin{frame}[fragile]{Simple Fully-Connected Neural Network Regressor}
   Regression
-  \end{frame}
-
-  \begin{frame}{Decision Tree - Regression}
-  Classification
-  Regression
-  \end{frame}
-
-  \begin{frame}{Clustering}
-  k-Means
-  Mention DBSCAN
-  \end{frame}
-
-  \begin{frame}{Neural Networks}
-  Classification
-  Regression
-  Only briefly
-  \end{frame}
-
-  \begin{frame}{Generative Neural Network Models}
-  Mention GANs, Autoencoders
   \end{frame}
 
 
