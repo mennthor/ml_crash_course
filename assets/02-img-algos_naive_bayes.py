@@ -1,7 +1,6 @@
 # coding: utf-8
 """
-Example plots for a naive bayes classification using a binary class Bernoulli
-model (same as logistic regression loss)
+Example plots for a naive bayes classification
 """
 
 import numpy as np

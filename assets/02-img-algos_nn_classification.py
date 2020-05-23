@@ -1,12 +1,12 @@
 # coding: utf-8
 """
-Example plots for a decision tree classification
+Example plots for a neural network classification
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as scs
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.neural_network import MLPClassifier
 
 plt.rcParams["lines.linewidth"] = 3
 rng = np.random.RandomState(1337)
@@ -36,10 +36,13 @@ classes2 = np.concatenate((classes2, np.ones(len(classes2))))
 # Classify
 data = np.vstack([xc, yc]).T
 # Use some tuned pruning on the non-lin, otherwise it drastically overfits
-dec_tree = DecisionTreeClassifier(ccp_alpha=0.05, random_state=rng)
-dec_tree_lin = DecisionTreeClassifier(random_state=rng)
-dec_tree.fit(data, classes)
-dec_tree_lin.fit(data2, classes2)
+nn = MLPClassifier(hidden_layer_sizes=(5, 10, 5), alpha=1.,
+                   random_state=rng, max_iter=500, solver="adam")
+nn_lin = MLPClassifier(
+    hidden_layer_sizes=(2,), activation="identity", solver="lbfgs",
+    random_state=rng, max_iter=1000, alpha=0.)
+nn.fit(data, classes)
+nn_lin.fit(data2, classes2)
 
 # Make boundaries
 _x = np.linspace(xmin - 1, xmax + 1, 250)
@@ -47,10 +50,10 @@ _y = np.linspace(xmin - 1, xmax + 1, 250)
 XX, YY = np.meshgrid(_x, _y)
 xx, yy = map(np.ravel, [XX, YY])
 grid_points = np.vstack([xx, yy]).T
-preds = dec_tree.predict_proba(grid_points)[:, 1]
-preds_classes = dec_tree.predict(grid_points)
-preds_lin = dec_tree_lin.predict_proba(grid_points)[:, 1]
-preds_classes_lin = dec_tree_lin.predict(grid_points)
+preds = nn.predict_proba(grid_points)[:, 1]
+preds_classes = nn.predict(grid_points)
+preds_lin = nn_lin.predict_proba(grid_points)[:, 1]
+preds_classes_lin = nn_lin.predict(grid_points)
 
 # Plot
 fig, (axt, axb) = plt.subplots(2, 1, figsize=(3.5, 6))
@@ -85,5 +88,5 @@ axb.set_xlabel("Feature 1")
 axb.set_ylabel("Feature 2")
 
 fig.tight_layout()
-plt.savefig("../build/assets/02-img-algos_tree_classification.png", dpi=200)
+plt.savefig("../build/assets/02-img-algos_nn_classification.png", dpi=200)
 # plt.show()
