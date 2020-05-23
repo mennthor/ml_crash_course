@@ -739,13 +739,56 @@
   \end{frame}
 
   \begin{frame}[fragile]{Simple Fully-Connected Neural Network Classifier}
-  Classification
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item \emph{Neural Network} classifiers are becoming more and more popular and are able to solve extremely difficult tasks like image classification
+          \item In general a neural network is a sequence of linear transformations nested in non-linear \enquote{activation functions}
+          \item The combination of linear and non-linear functions enable the network to transform the input in a high-dimensional space and manipulate it in such way, that a separating hyperplane can be found
+          % \item The most simple network architectures only contain \enquote{fully connected} layers, meaning a straightforward chain of linear transformations and activations
+          \item \small\url{https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html}
+        \end{itemize}
+        \vspace{-0.5em}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{Neural Network classification [Note: example shortened]}]
+            from sklearn.neural_network import MLPClassifier
+            nn = MLPClassifier(hidden_layer_sizes=(5, 10, 5))
+            nn.fit(data_train, classes)
+            preds_classes = nn.predict(data_test)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_nn_classification}
+      \end{column}
+    \end{columns}
   \end{frame}
 
-  \begin{frame}[fragile]{Simple Fully-Connected Neural Network Regressor}
-  Regression
+  \begin{frame}[fragile]{Simple Fully-Connected Neural Network Regression}
+    \begin{columns}
+      \begin{column}{0.65\textwidth}
+        \begin{itemize}
+          \item For the regression part the same as for the tree based learner applies: We have to exchange the loss for a regression loss
+          \item Depending on the activation function, the regression line can be smooth or also piecewise linear (if choosing eg. \emph{ReLU}), like the decision boundary in classification
+          \item \small\url{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor}
+        \end{itemize}
+        \begin{mdframed}
+          \begin{lstlisting}[style=dark, gobble=10, title=\lsttitlelight{Neural Network regression [Note: example shortened]}]
+            from sklearn.neural_network import MLPCRegressor
+            nn = MLPCRegressor(hidden_layer_sizes=(5, 10, 5))
+            nn.fit(x_vals, y_vals)
+            preds_classes = nn.predict(x_test_vals)
+          \end{lstlisting}
+        \end{mdframed}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+        \vspace{1em}
+
+        \includegraphics[width=0.9\textwidth]{02-img-algos_nn_regression}
+      \end{column}
+    \end{columns}
   \end{frame}
-
-
 
 \end{document}
